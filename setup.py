@@ -7,6 +7,19 @@ from subprocess import check_call
 from setuptools import setup, find_packages, Command
 from setuptools.command.sdist import sdist
 
+requirements = ['PyQt5', ]
+extra_requirements = {
+    'dev': [
+        'pytest',
+        'pytest-runner',
+        'pyqt-distutils',
+        'PyInstaller',
+        'Sphinx',
+        'sphinx_rtd_theme',
+        'flake8'
+    ]
+}
+
 
 cmdclass = {}
 
@@ -33,14 +46,14 @@ if has_build_ui:
         """Build UI, resources and translations."""
 
         def run(self):
-            # build translations
-            check_call(['pylupdate5', 'app.pro'])
-
-            lrelease = os.environ.get('LRELEASE_BIN')
-            if not lrelease:
-                lrelease = 'lrelease'
-
-            check_call([lrelease, 'app.pro'])
+            # # build translations
+            # check_call(['pylupdate5', 'app.pro'])
+            #
+            # lrelease = os.environ.get('LRELEASE_BIN')
+            # if not lrelease:
+            #     lrelease = 'lrelease'
+            #
+            # check_call([lrelease, 'app.pro'])
 
             # build UI & resources
             build_ui.run(self)
@@ -87,6 +100,8 @@ setup(name='app',
       author_email='gerardmarull@gmail.com',
       license='MIT',
       url='http://www.teslabs.com',
+      install_requires=requirements,
+      extras_require=extra_requirements,
       entry_points={
           'gui_scripts': ['app=app.__main__:main'],
       },
