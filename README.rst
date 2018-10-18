@@ -21,6 +21,10 @@ Features
 Getting started
 ---------------
 
+New installation mechanics (see: https://stackoverflow.com/questions/28509965/setuptools-development-requirements):
+
+    pip install -e .[dev] .
+
 First of all make sure you have pipenv_ installed and then initialize a
 working development environment like this::
 
