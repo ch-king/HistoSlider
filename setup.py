@@ -26,7 +26,6 @@ try:
             # build UI & resources
             build_ui.run(self)
 
-
     cmdclass['build_res'] = build_res
 except ImportError:
     pass
