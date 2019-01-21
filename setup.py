@@ -1,64 +1,35 @@
 #!/usr/bin/env python
 
-import re
-import os
 from subprocess import check_call
 
 from setuptools import setup, find_packages, Command
 from setuptools.command.sdist import sdist
 
-requirements = ['PyQt5', ]
+requirements = ['PySide2', ]
 extra_requirements = {
     'dev': [
         'pytest',
-        'pytest-runner',
         'pyqt-distutils',
         'PyInstaller',
-        'Sphinx',
-        'sphinx_rtd_theme',
         'flake8'
     ]
 }
 
-
 cmdclass = {}
-
 
 try:
     from pyqt_distutils.build_ui import build_ui
-    has_build_ui = True
-except ImportError:
-    has_build_ui = False
-
-try:
-    from sphinx.setup_command import BuildDoc
-    cmdclass['build_docs'] = BuildDoc
-except ImportError:
-    pass
-
-
-with open('app/__init__.py') as f:
-    _version = re.search(r'__version__\s+=\s+\'(.*)\'', f.read()).group(1)
-
-
-if has_build_ui:
     class build_res(build_ui):
         """Build UI, resources and translations."""
 
         def run(self):
-            # # build translations
-            # check_call(['pylupdate5', 'app.pro'])
-            #
-            # lrelease = os.environ.get('LRELEASE_BIN')
-            # if not lrelease:
-            #     lrelease = 'lrelease'
-            #
-            # check_call([lrelease, 'app.pro'])
-
             # build UI & resources
             build_ui.run(self)
 
+
     cmdclass['build_res'] = build_res
+except ImportError:
+    pass
 
 
 class custom_sdist(sdist):
@@ -91,15 +62,14 @@ class bdist_app(Command):
 
 cmdclass['bdist_app'] = bdist_app
 
-
 setup(name='app',
-      version=_version,
+      version="0.1.0",
       packages=find_packages(),
-      description='PyQt5 Boilerplate',
-      author='Gerard Marull-Paretas',
-      author_email='gerardmarull@gmail.com',
+      description='Qt for Python Boilerplate',
+      author='Anton Rau',
+      author_email='anton.rau@gmail.com',
       license='MIT',
-      url='http://www.teslabs.com',
+      url='https://github.com/plankter/qt-boilerplate',
       install_requires=requirements,
       extras_require=extra_requirements,
       entry_points={

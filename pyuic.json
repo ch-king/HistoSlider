@@ -5,8 +5,8 @@
             "app"
         ],
         [
-            "resources/views/*.ui",
-            "app/views"
+            "resources/ui/*.ui",
+            "app/ui"
         ],
         [
             "resources/widgets/*.ui",
@@ -14,8 +14,8 @@
         ]
     ],
     "hooks": [],
-    "pyrcc": "pyrcc5",
+    "pyrcc": "pyside2-rcc",
     "pyrcc_options": "",
-    "pyuic": "pyuic5",
-    "pyuic_options": "--import-from app"
+    "pyuic": "pyside2-uic",
+    "pyuic_options": ""
 }
