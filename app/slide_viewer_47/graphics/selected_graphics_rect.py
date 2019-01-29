@@ -1,8 +1,8 @@
 import typing
 
-from PySide2.QtCore import QRectF, Qt
-from PySide2.QtGui import QPen, QColor, QPainter
-from PySide2.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
+from PyQt5.QtCore import QRectF, Qt, QSize
+from PyQt5.QtGui import QPen, QColor, QPainter
+from PyQt5.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
 
 
 class SelectedGraphicsRect(QGraphicsItem):

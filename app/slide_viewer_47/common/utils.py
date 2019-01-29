@@ -1,5 +1,5 @@
-from PySide2.QtCore import QRectF, QPoint, QPointF
-from PySide2.QtGui import QPolygonF
+from PyQt5.QtCore import QRectF, QPoint, QPointF
+from PyQt5.QtGui import QPolygonF
 from math import ceil
 
 

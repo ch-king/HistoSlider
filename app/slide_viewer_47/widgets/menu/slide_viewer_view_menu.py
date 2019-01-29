@@ -1,5 +1,5 @@
-from PySide2.QtCore import QRectF, QSize
-from PySide2.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFormLayout, QLineEdit, QHBoxLayout, QSpinBox, \
+from PyQt5.QtCore import QRectF, QSize
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFormLayout, QLineEdit, QHBoxLayout, QSpinBox, \
     QMessageBox
 
 from slide_viewer_47.common.json_utils import to_json

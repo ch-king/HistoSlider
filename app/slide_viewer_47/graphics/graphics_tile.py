@@ -2,10 +2,10 @@ import typing
 
 import openslide
 from PIL.ImageQt import ImageQt
-from PySide2.QtCore import QRectF, QRect, Qt
-from PySide2.QtGui import QPixmap, QPainter
-from PySide2.QtGui import QPixmapCache
-from PySide2.QtWidgets import QGraphicsItem, QGraphicsPixmapItem, QGraphicsRectItem, QWidget, QStyleOptionGraphicsItem
+from PyQt5.QtCore import QRectF, QRect, Qt, QSize
+from PyQt5.QtGui import QPixmap, QPainter
+from PyQt5.QtGui import QPixmapCache
+from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPixmapItem, QGraphicsRectItem, QWidget, QStyleOptionGraphicsItem
 
 
 class GraphicsTile(QGraphicsItem):

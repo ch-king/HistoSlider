@@ -1,6 +1,6 @@
 import typing
 
-from PySide2.QtWidgets import QGraphicsItemGroup, QGraphicsItem
+from PyQt5.QtWidgets import QGraphicsItemGroup, QGraphicsItem
 
 
 class MyGraphicsGroup(QGraphicsItemGroup):

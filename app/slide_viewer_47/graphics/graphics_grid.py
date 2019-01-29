@@ -1,8 +1,9 @@
 import typing
+from itertools import starmap
 
-from PySide2.QtCore import QRectF, Qt
-from PySide2.QtGui import QColor, QPainter
-from PySide2.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
+from PyQt5.QtCore import QRectF, Qt
+from PyQt5.QtGui import QColor, QPainter
+from PyQt5.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
 
 
 class GraphicsGrid(QGraphicsItem):
@@ -18,7 +19,6 @@ class GraphicsGrid(QGraphicsItem):
         # self.setCacheMode(QGraphicsItem.DeviceCoordinateCache)
         self.downsample = 1
 
-        from itertools import starmap
         self.star_map_ = starmap
 
         self.color_alpha__rects_0_level = {}
@@ -43,8 +43,7 @@ class GraphicsGrid(QGraphicsItem):
     def boundingRect(self):
         return self.bounding_qrectf
 
-    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem,
-              widget: typing.Optional[QWidget] = ...):
+    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
         painter.save()
         scale = 1 / self.downsample
         painter.scale(scale, scale)

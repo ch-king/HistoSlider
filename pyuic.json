@@ -14,8 +14,8 @@
         ]
     ],
     "hooks": [],
-    "pyrcc": "pyside2-rcc",
+    "pyrcc": "pyrcc5",
     "pyrcc_options": "",
-    "pyuic": "pyside2-uic",
+    "pyuic": "pyuic5",
     "pyuic_options": ""
 }

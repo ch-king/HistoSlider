@@ -1,7 +1,7 @@
 import typing
 
-from PySide2.QtCore import QRectF, Qt
-from PySide2.QtWidgets import QGraphicsItem, QGraphicsItemGroup
+from PyQt5.QtCore import QRectF, Qt
+from PyQt5.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
 from slide_viewer_47.graphics.my_graphics_group import MyGraphicsGroup
 

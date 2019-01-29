@@ -1,5 +1,5 @@
-from PySide2.QtCore import QRectF, Qt
-from PySide2.QtWidgets import QGraphicsItemGroup
+from PyQt5.QtCore import QRectF, Qt
+from PyQt5.QtWidgets import QGraphicsItemGroup
 
 from slide_viewer_47.common.level_builders import build_tiles_level, build_grid_level_from_rects
 from slide_viewer_47.common.slide_view_params import SlideViewParams

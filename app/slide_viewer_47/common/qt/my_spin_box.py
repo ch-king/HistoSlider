@@ -1,6 +1,6 @@
 import typing
 
-from PySide2.QtWidgets import QSpinBox, QWidget
+from PyQt5.QtWidgets import QSpinBox, QWidget
 
 
 class MySpinBox(QSpinBox):

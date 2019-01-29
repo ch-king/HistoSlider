@@ -5,7 +5,7 @@ from subprocess import check_call
 from setuptools import setup, find_packages, Command
 from setuptools.command.sdist import sdist
 
-requirements = ['PySide2', 'openslide-python']
+requirements = ['PyQt5', 'openslide-python']
 extra_requirements = {
     'dev': [
         'pytest',
@@ -19,12 +19,15 @@ cmdclass = {}
 
 try:
     from pyqt_distutils.build_ui import build_ui
+
+
     class build_res(build_ui):
         """Build UI, resources and translations."""
 
         def run(self):
             # build UI & resources
             build_ui.run(self)
+
 
     cmdclass['build_res'] = build_res
 except ImportError:

@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QAction, QMenu
+from PyQt5.QtWidgets import QAction, QMenu
 
 
 class MyAction(QAction):

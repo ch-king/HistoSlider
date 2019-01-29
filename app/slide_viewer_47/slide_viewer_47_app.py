@@ -1,7 +1,7 @@
 import sys
 
-from PySide2.QtGui import QPixmapCache
-from PySide2.QtWidgets import QApplication
+from PyQt5.QtGui import QPixmapCache
+from PyQt5.QtWidgets import QApplication
 
 from slide_viewer_47.common.slide_view_params import SlideViewParams
 from slide_viewer_47.widgets.slide_viewer_main_window import SlideViewerMainWindow
@@ -17,6 +17,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     cache_size_in_kb = 700 * 10 ** 3
     QPixmapCache.setCacheLimit(cache_size_in_kb)
+
     win = SlideViewerMainWindow()
     win.show()
 

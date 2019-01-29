@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>-1</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -26,16 +26,6 @@
       <property name="tabBarAutoHide">
        <bool>false</bool>
       </property>
-      <widget class="QWidget" name="tabVisualization">
-       <attribute name="title">
-        <string>Visualization</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tabAnalysis">
-       <attribute name="title">
-        <string>Analysis</string>
-       </attribute>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -156,9 +146,7 @@
     <string>Open file...</string>
    </property>
   </action>
-  <zorder>dockWidget</zorder>
   <zorder>dockWidgetInfo</zorder>
-  <zorder>dockWidget_2</zorder>
  </widget>
  <resources>
   <include location="../resources.qrc"/>

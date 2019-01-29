@@ -1,7 +1,7 @@
 import typing
 
-from PySide2 import QtCore
-from PySide2.QtWidgets import QGraphicsScene
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import QGraphicsScene
 
 
 class MyGraphicsScene(QGraphicsScene):

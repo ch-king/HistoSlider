@@ -1,5 +1,5 @@
-from PySide2.QtGui import QPixmapCache
-from PySide2.QtWidgets import QFileDialog
+from PyQt5.QtGui import QPixmapCache
+from PyQt5.QtWidgets import QFileDialog
 
 from slide_viewer_47.common.qt.my_action import MyAction
 from slide_viewer_47.common.slide_view_params import SlideViewParams

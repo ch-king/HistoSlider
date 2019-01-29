@@ -1,6 +1,6 @@
-from PySide2.QtCore import QPoint, Qt, QEvent, QRect, QSize, QRectF, Signal, QMarginsF, QObject
-from PySide2.QtGui import QWheelEvent, QMouseEvent, QTransform, QShowEvent
-from PySide2.QtWidgets import QWidget, QGraphicsView, QVBoxLayout, QLabel, QRubberBand, QHBoxLayout
+from PyQt5.QtCore import QPoint, Qt, QEvent, QRect, QSize, QRectF, pyqtSignal, QMarginsF, QObject
+from PyQt5.QtGui import QWheelEvent, QMouseEvent, QTransform, QShowEvent
+from PyQt5.QtWidgets import QWidget, QGraphicsView, QVBoxLayout, QLabel, QRubberBand, QHBoxLayout
 
 from slide_viewer_47.common.slide_helper import SlideHelper
 from slide_viewer_47.common.slide_view_params import SlideViewParams
@@ -10,7 +10,7 @@ from slide_viewer_47.graphics.slide_graphics_group import SlideGraphicsGroup
 
 
 class SlideViewer(QWidget):
-    eventSignal = Signal(QEvent)
+    eventSignal = pyqtSignal(QEvent)
 
     def __init__(self, parent: QWidget = None, viewer_top_else_left=True):
         super().__init__(parent)

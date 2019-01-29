@@ -1,8 +1,8 @@
 import json
 from functools import singledispatch
 
-from PySide2.QtCore import QRectF, QRect
-from PySide2.QtGui import QColor
+from PyQt5.QtCore import QRectF, QRect
+from PyQt5.QtGui import QColor
 
 from slide_viewer_47.common.slide_view_params import SlideViewParams
 

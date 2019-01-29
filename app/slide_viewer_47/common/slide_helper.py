@@ -1,5 +1,5 @@
 import openslide
-from PySide2.QtCore import QRectF
+from PyQt5.QtCore import QRectF
 
 
 class SlideHelper():

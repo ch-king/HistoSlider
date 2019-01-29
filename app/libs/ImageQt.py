@@ -20,8 +20,8 @@ from PIL import Image
 from io import BytesIO
 
 from PIL._util import isPath
-from PySide2.QtGui import QImage, qRgba, QPixmap
-from PySide2.QtCore import QBuffer, QIODevice
+from PyQt5.QtGui import QImage, qRgba, QPixmap
+from PyQt5.QtCore import QBuffer, QIODevice
 
 
 def rgb(r, g, b, a=255):
