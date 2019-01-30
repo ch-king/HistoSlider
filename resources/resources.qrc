@@ -6,5 +6,7 @@
         <file>icons/app.ico</file>
         <file>icons/app.svg</file>
         <file>icons/grid.png</file>
+        <file>icons/open.svg</file>
+        <file>icons/exit.png</file>
     </qresource>
 </RCC>
