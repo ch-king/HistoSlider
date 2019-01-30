@@ -1,42 +1,58 @@
 from PyQt5.QtCore import QRectF, QSize
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFormLayout, QLineEdit, QHBoxLayout, QSpinBox, \
-    QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget, QToolBar, QAction, QDialog, QSpinBox, \
+    QHBoxLayout, QFormLayout, QVBoxLayout, QDialogButtonBox, QLineEdit, QMessageBox
 
 from slide_viewer_47.common.json_utils import to_json
 from slide_viewer_47.common.level_builders import build_rects_and_color_alphas_for_grid
-from slide_viewer_47.common.qt.my_action import MyAction
-from slide_viewer_47.common.qt.my_menu import MyMenu
 from slide_viewer_47.common.qt.my_spin_box import MySpinBox
 from slide_viewer_47.common.screenshot_builders import build_screenshot_image
 from slide_viewer_47.common.slide_view_params import SlideViewParams
 from slide_viewer_47.widgets.slide_viewer import SlideViewer
+from ui.SlideViewerWidget_ui import Ui_SliderViewerWidget
 
 
-class SlideViewerViewMenu(MyMenu):
-    def __init__(self, title, parent, slide_viewer: SlideViewer):
-        super().__init__(title, parent)
+class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
+    def __init__(self):
+        QWidget.__init__(self)
+        self.setupUi(self)
 
-        self.slide_viewer = slide_viewer
+        self.slide_viewer = SlideViewer(viewer_top_else_left=True)
+        self.verticalLayout.addWidget(self.toolbar)
+        self.verticalLayout.addWidget(self.slide_viewer)
 
-        self.grid_action = MyAction("set gri&d size", self, self.on_set_grid_action)
-        self.toggle_grid_action = MyAction("&toggle grid", self, self.on_toggle_grid_action)
-        self.go_to_action = MyAction("&go to", self, self.on_go_to_action)
-        self.take_screenshot_action = MyAction("&screenshot", self, self.on_take_screenshot_action)
-        self.print_items_action = MyAction("print &items", self, self.on_print_items_action)
-        self.print_slide_view_params_action = MyAction("print slide_&view_params", self,
-                                                       self.on_print_slide_view_params)
+    @property
+    def toolbar(self) -> QToolBar:
+        toolbar = QToolBar()
 
-    def on_print_items_action(self):
-        items = self.slide_viewer.scene.items(self.slide_viewer.get_current_view_scene_rect())
-        print(items)
-        QMessageBox.information(None, "Items", str(items))
+        set_grid_size_action = QAction(QIcon(':/icons/grid.png'), "Grid Size", self)
+        set_grid_size_action.triggered.connect(self.set_grid_size)
+        toolbar.addAction(set_grid_size_action)
 
-    def on_print_slide_view_params(self):
-        str_ = to_json(self.slide_viewer.slide_view_params)
-        print(str_)
-        QMessageBox.information(None, "SlideViewParams", str_)
+        show_grid_action = QAction("Show Grid", self)
+        show_grid_action.setCheckable(True)
+        show_grid_action.triggered.connect(self.show_grid)
+        toolbar.addAction(show_grid_action)
 
-    def on_set_grid_action(self):
+        go_to_action = QAction("Go To", self)
+        go_to_action.triggered.connect(self.go_to)
+        toolbar.addAction(go_to_action)
+
+        take_screenshot_action = QAction("Take Screenshot", self)
+        take_screenshot_action.triggered.connect(self.take_screenshot)
+        toolbar.addAction(take_screenshot_action)
+
+        print_items_action = QAction("Print Items", self)
+        print_items_action.triggered.connect(self.print_items)
+        toolbar.addAction(print_items_action)
+
+        print_slide_view_params_action = QAction("Print Slide View Params", self)
+        print_slide_view_params_action.triggered.connect(self.print_slide_view_params)
+        toolbar.addAction(print_slide_view_params_action)
+
+        return toolbar
+
+    def set_grid_size(self):
         dialog = QDialog()
         dialog.setWindowTitle("Grid size")
 
@@ -68,10 +84,14 @@ class SlideViewerViewMenu(MyMenu):
         res = dialog.exec()
         if res == QDialog.Accepted:
             rects, color_alphas = build_rects_and_color_alphas_for_grid((grid_w.value(), grid_h.value()),
-                                                                       self.slide_viewer.slide_helper.get_level_size(0))
+                                                                        self.slide_viewer.slide_helper.get_level_size(
+                                                                            0))
             self.slide_viewer.slide_graphics.update_grid_rects_0_level(rects, color_alphas)
 
-    def on_go_to_action(self):
+    def show_grid(self, state: bool):
+        self.slide_viewer.slide_graphics.update_grid_visibility(state)
+
+    def go_to(self):
         dialog = QDialog()
         dialog.setWindowTitle("Go to")
 
@@ -101,7 +121,7 @@ class SlideViewerViewMenu(MyMenu):
             qrectf = QRectF(x.value(), y.value(), width.value(), height.value())
             self.slide_viewer.load(SlideViewParams(slide_path, level.value(), qrectf))
 
-    def on_take_screenshot_action(self):
+    def take_screenshot(self):
         dialog = QDialog()
         dialog.setWindowTitle("Screenshot")
 
@@ -127,6 +147,12 @@ class SlideViewerViewMenu(MyMenu):
                                            self.slide_viewer.get_current_view_scene_rect())
             image.save(filepath.text())
 
-    def on_toggle_grid_action(self):
-        self.slide_viewer.slide_graphics.update_grid_visibility(
-            not self.slide_viewer.slide_graphics.slide_view_params.grid_visible)
+    def print_items(self):
+        items = self.slide_viewer.scene.items(self.slide_viewer.get_current_view_scene_rect())
+        print(items)
+        QMessageBox.information(None, "Items", str(items))
+
+    def print_slide_view_params(self):
+        str_ = to_json(self.slide_viewer.slide_view_params)
+        print(str_)
+        QMessageBox.information(None, "SlideViewParams", str_)

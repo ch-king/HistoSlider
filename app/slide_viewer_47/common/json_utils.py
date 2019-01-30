@@ -32,5 +32,5 @@ def qcolor_to_json(val: QColor):
 def slide_view_params_to_json(val: SlideViewParams):
     vars_ = dict(vars(val))
     del vars_["grid_rects_0_level"]
-    del vars_["grid_colors_0_level"]
+    # del vars_["grid_colors_0_level"]
     return json.dumps(vars_, indent=4)

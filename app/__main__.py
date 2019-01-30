@@ -4,7 +4,6 @@ from PyQt5.QtCore import QFile, QTextStream
 from PyQt5.QtGui import QIcon, QPixmapCache
 from PyQt5.QtWidgets import QApplication
 
-from slide_viewer_47.common.slide_view_params import SlideViewParams
 from ui.MainWindow import MainWindow
 
 
@@ -23,10 +22,6 @@ def main():
 
     mw = MainWindow()
     mw.show()
-
-    slide_path = '/home/anton/Downloads/CMU-1.tiff'
-    slide_view_params = SlideViewParams(slide_path)
-    mw.slide_viewer.load(slide_view_params)
 
     sys.exit(app.exec_())
 
