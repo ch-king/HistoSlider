@@ -14,8 +14,12 @@ class GraphicsRect(QGraphicsRectItem):
         self.setAcceptHoverEvents(False)
         self.brush = QBrush(self.color)
 
-    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem,
-              widget: typing.Optional[QWidget] = ...):
+    def paint(
+        self,
+        painter: QPainter,
+        option: QStyleOptionGraphicsItem,
+        widget: typing.Optional[QWidget] = ...,
+    ):
         painter.save()
         painter.setBrush(self.brush)
         painter.setRenderHint(QPainter.Antialiasing, True)

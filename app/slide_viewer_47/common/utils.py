@@ -37,9 +37,10 @@ def slice_rect2(rect_size, tile_size, tile_step):
             (j - 1) * x_step + tile_size[0],
             (i - 1) * y_step + tile_size[1],
             tile_size[0],
-            tile_size[1]
+            tile_size[1],
         )
-        for i in range(rows) for j in range(cols)
+        for i in range(rows)
+        for j in range(cols)
     ]
 
     if cols != x_size // x_step:
@@ -60,10 +61,13 @@ def rect_to_str(rect):
     if isinstance(rect, QPolygonF):
         rect = rect.boundingRect()
     if isinstance(rect, QRectF):
-        return "({:.2f}, {:.2f}, {:.2f}, {:.2f})".format(rect.x(), rect.y(), rect.bottomRight().x(),
-                                                         rect.bottomRight().y())
+        return "({:.2f}, {:.2f}, {:.2f}, {:.2f})".format(
+            rect.x(), rect.y(), rect.bottomRight().x(), rect.bottomRight().y()
+        )
     else:
-        return "({}, {}, {}, {})".format(rect.x(), rect.y(), rect.bottomRight().x(), rect.bottomRight().y())
+        return "({}, {}, {}, {})".format(
+            rect.x(), rect.y(), rect.bottomRight().x(), rect.bottomRight().y()
+        )
 
 
 def point_to_str(point: QPoint):

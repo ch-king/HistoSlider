@@ -69,60 +69,45 @@
    </attribute>
    <addaction name="actionOpenFile"/>
   </widget>
-  <widget class="QDockWidget" name="dockWidgetTools">
+  <widget class="QDockWidget" name="dockWidgetSlides">
    <property name="features">
-    <set>QDockWidget::NoDockWidgetFeatures</set>
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Tools</string>
+    <string>Slides</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
+   <widget class="QWidget" name="dockWidgetContentsSlides">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QGroupBox" name="groupBoxSamples">
-       <property name="title">
-        <string>Samples</string>
+      <widget class="QTreeView" name="treeViewSlides">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBoxSourceImages">
-       <property name="title">
-        <string>Source Images</string>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidgetInfo">
+  <widget class="QDockWidget" name="dockWidgetChannels">
    <property name="features">
-    <set>QDockWidget::NoDockWidgetFeatures</set>
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Info</string>
+    <string>Channels</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_2">
+   <widget class="QWidget" name="dockWidgetContentsChannels">
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <widget class="QGroupBox" name="groupBoxChannels">
-       <property name="title">
-        <string>Channels</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBoxHeatmapChannels">
-       <property name="title">
-        <string>Heatmap Channels</string>
-       </property>
-      </widget>
+      <widget class="QListView" name="listViewChannels"/>
      </item>
     </layout>
    </widget>
@@ -156,7 +141,7 @@
     <string>Open file...</string>
    </property>
   </action>
-  <zorder>dockWidgetInfo</zorder>
+  <zorder>dockWidgetChannels</zorder>
  </widget>
  <resources>
   <include location="../resources.qrc"/>

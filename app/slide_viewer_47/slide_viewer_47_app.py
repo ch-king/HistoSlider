@@ -21,7 +21,7 @@ if __name__ == "__main__":
     win = SlideViewerMainWindow()
     win.show()
 
-    slide_path = '/home/anton/Downloads/CMU-1.tiff'
+    slide_path = "/home/anton/Downloads/CMU-1.tiff"
     slide_view_params = SlideViewParams(slide_path)
     win.slide_viewer.load(slide_view_params)
 

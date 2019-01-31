@@ -1,7 +1,18 @@
 from PyQt5.QtCore import QRectF, QSize
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget, QToolBar, QAction, QDialog, QSpinBox, \
-    QHBoxLayout, QFormLayout, QVBoxLayout, QDialogButtonBox, QLineEdit, QMessageBox
+from PyQt5.QtWidgets import (
+    QAction,
+    QDialog,
+    QDialogButtonBox,
+    QFormLayout,
+    QHBoxLayout,
+    QLineEdit,
+    QMessageBox,
+    QSpinBox,
+    QToolBar,
+    QVBoxLayout,
+    QWidget,
+)
 
 from slide_viewer_47.common.json_utils import to_json
 from slide_viewer_47.common.level_builders import build_rects_and_color_alphas_for_grid
@@ -25,7 +36,7 @@ class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
     def toolbar(self) -> QToolBar:
         toolbar = QToolBar()
 
-        set_grid_size_action = QAction(QIcon(':/icons/grid.png'), "Grid Size", self)
+        set_grid_size_action = QAction(QIcon(":/icons/grid.png"), "Grid Size", self)
         set_grid_size_action.triggered.connect(self.set_grid_size)
         toolbar.addAction(set_grid_size_action)
 
@@ -76,17 +87,22 @@ class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
 
         main_layout = QVBoxLayout()
         main_layout.addLayout(form_layout)
-        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog
+        )
         main_layout.addWidget(button_box)
         dialog.setLayout(main_layout)
         button_box.accepted.connect(dialog.accept)
         button_box.rejected.connect(dialog.reject)
         res = dialog.exec()
         if res == QDialog.Accepted:
-            rects, color_alphas = build_rects_and_color_alphas_for_grid((grid_w.value(), grid_h.value()),
-                                                                        self.slide_viewer.slide_helper.get_level_size(
-                                                                            0))
-            self.slide_viewer.slide_graphics.update_grid_rects_0_level(rects, color_alphas)
+            rects, color_alphas = build_rects_and_color_alphas_for_grid(
+                (grid_w.value(), grid_h.value()),
+                self.slide_viewer.slide_helper.get_level_size(0),
+            )
+            self.slide_viewer.slide_graphics.update_grid_rects_0_level(
+                rects, color_alphas
+            )
 
     def show_grid(self, state: bool):
         self.slide_viewer.slide_graphics.update_grid_visibility(state)
@@ -110,7 +126,9 @@ class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
 
         main_layout = QVBoxLayout()
         main_layout.addLayout(form_layout)
-        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog
+        )
         main_layout.addWidget(button_box)
         dialog.setLayout(main_layout)
         button_box.accepted.connect(dialog.accept)
@@ -136,19 +154,26 @@ class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
 
         main_layout = QVBoxLayout()
         main_layout.addLayout(form_layout)
-        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog
+        )
         main_layout.addWidget(button_box)
         dialog.setLayout(main_layout)
         button_box.accepted.connect(dialog.accept)
         button_box.rejected.connect(dialog.reject)
         res = dialog.exec()
         if res == QDialog.Accepted:
-            image = build_screenshot_image(self.slide_viewer.scene, QSize(width.value(), height.value()),
-                                           self.slide_viewer.get_current_view_scene_rect())
+            image = build_screenshot_image(
+                self.slide_viewer.scene,
+                QSize(width.value(), height.value()),
+                self.slide_viewer.get_current_view_scene_rect(),
+            )
             image.save(filepath.text())
 
     def print_items(self):
-        items = self.slide_viewer.scene.items(self.slide_viewer.get_current_view_scene_rect())
+        items = self.slide_viewer.scene.items(
+            self.slide_viewer.get_current_view_scene_rect()
+        )
         print(items)
         QMessageBox.information(None, "Items", str(items))
 

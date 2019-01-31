@@ -13,9 +13,9 @@ def main():
     cache_size_in_kb = 700 * 10 ** 3
     QPixmapCache.setCacheLimit(cache_size_in_kb)
 
-    app.setWindowIcon(QIcon(':/icons/app.svg'))
+    app.setWindowIcon(QIcon(":/icons/app.svg"))
 
-    f = QFile(':/style.qss')
+    f = QFile(":/style.qss")
     f.open(QFile.ReadOnly | QFile.Text)
     app.setStyleSheet(QTextStream(f).readAll())
     f.close()

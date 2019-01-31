@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import QGraphicsItemGroup, QGraphicsItem
 
 
 class MyGraphicsGroup(QGraphicsItemGroup):
-
     def __init__(self, parent: typing.Optional[QGraphicsItem] = None) -> None:
         super().__init__(parent)
         # self.setFlag(QGraphicsItem.ItemContainsChildrenInShape, True)
@@ -13,7 +12,9 @@ class MyGraphicsGroup(QGraphicsItemGroup):
         # self.setFlag(QGraphicsItem.ItemHasNoContents, True)
 
     def __str__(self) -> str:
-        return "{}: children count: {}".format(self.__class__.__name__, len(self.childItems()))
+        return "{}: children count: {}".format(
+            self.__class__.__name__, len(self.childItems())
+        )
 
     def __repr__(self) -> str:
         return self.__str__()

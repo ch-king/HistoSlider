@@ -32,17 +32,52 @@ class OnLoadSlideAction(MyAction):
             "tif",
             "bif",
             "mrxs",
-            "bif"]
+            "bif",
+        ]
         pillow_formats = [
-            'bmp', 'bufr', 'cur', 'dcx', 'fits', 'fl', 'fpx', 'gbr',
-            'gd', 'gif', 'grib', 'hdf5', 'ico', 'im', 'imt', 'iptc',
-            'jpeg', 'jpg', 'jpe', 'mcidas', 'mic', 'mpeg', 'msp',
-            'pcd', 'pcx', 'pixar', 'png', 'ppm', 'psd', 'sgi',
-            'spider', 'tga', 'tiff', 'wal', 'wmf', 'xbm', 'xpm',
-            'xv'
+            "bmp",
+            "bufr",
+            "cur",
+            "dcx",
+            "fits",
+            "fl",
+            "fpx",
+            "gbr",
+            "gd",
+            "gif",
+            "grib",
+            "hdf5",
+            "ico",
+            "im",
+            "imt",
+            "iptc",
+            "jpeg",
+            "jpg",
+            "jpe",
+            "mcidas",
+            "mic",
+            "mpeg",
+            "msp",
+            "pcd",
+            "pcx",
+            "pixar",
+            "png",
+            "ppm",
+            "psd",
+            "sgi",
+            "spider",
+            "tga",
+            "tiff",
+            "wal",
+            "wmf",
+            "xbm",
+            "xpm",
+            "xv",
         ]
         available_formats = [*whole_slide_formats, *pillow_formats]
-        available_extensions = ["." + available_format for available_format in available_formats]
+        available_extensions = [
+            "." + available_format for available_format in available_formats
+        ]
         return available_extensions
 
     def open_file_name_dialog(self):
@@ -50,7 +85,11 @@ class OnLoadSlideAction(MyAction):
         options = QFileDialog.Options()
         file_ext_strings = ["*" + ext for ext in self.get_available_formats()]
         file_ext_string = " ".join(file_ext_strings)
-        file_name, _ = QFileDialog.getOpenFileName(self.window, "Select whole-slide image to view", "",
-                                                   "Whole-slide images ({});;".format(file_ext_string),
-                                                   options=options)
+        file_name, _ = QFileDialog.getOpenFileName(
+            self.window,
+            "Select whole-slide image to view",
+            "",
+            "Whole-slide images ({});;".format(file_ext_string),
+            options=options,
+        )
         return file_name

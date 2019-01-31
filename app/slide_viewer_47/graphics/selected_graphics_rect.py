@@ -14,7 +14,9 @@ class SelectedGraphicsRect(QGraphicsItem):
     def boundingRect(self):
         return self.qrectf
 
-    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: typing.Optional[QWidget] = ...):
+    def paint(
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+    ):
         painter.save()
         pen = QPen(QColor(0, 0, 0, 255))
         pen.setWidth(1)

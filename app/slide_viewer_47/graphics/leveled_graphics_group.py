@@ -50,7 +50,9 @@ class LeveledGraphicsGroup(QGraphicsItemGroup):
             group.setVisible(level == visible_level)
 
     def __str__(self) -> str:
-        return "{}: visible_level: {}".format(self.__class__.__name__, self.visible_level)
+        return "{}: visible_level: {}".format(
+            self.__class__.__name__, self.visible_level
+        )
 
     def __repr__(self) -> str:
         return self.__str__()

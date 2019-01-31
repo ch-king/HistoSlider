@@ -5,15 +5,25 @@ from PIL.ImageQt import ImageQt
 from PyQt5.QtCore import QRectF, QRect, Qt, QSize
 from PyQt5.QtGui import QPixmap, QPainter
 from PyQt5.QtGui import QPixmapCache
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPixmapItem, QGraphicsRectItem, QWidget, QStyleOptionGraphicsItem
+from PyQt5.QtWidgets import (
+    QGraphicsItem,
+    QGraphicsPixmapItem,
+    QGraphicsRectItem,
+    QWidget,
+    QStyleOptionGraphicsItem,
+)
 
 
 class GraphicsTile(QGraphicsItem):
     def __init__(self, x_y_w_h, slide_path, level, downsample):
         super().__init__()
         self.x_y_w_h = x_y_w_h
-        self.slide_rect_0 = QRect(int(x_y_w_h[0] * downsample), int(self.x_y_w_h[1] * downsample), x_y_w_h[2],
-                                  x_y_w_h[3])
+        self.slide_rect_0 = QRect(
+            int(x_y_w_h[0] * downsample),
+            int(self.x_y_w_h[1] * downsample),
+            x_y_w_h[2],
+            x_y_w_h[3],
+        )
         self.slide_path = slide_path
         self.level = level
         self.downsample = downsample
@@ -32,15 +42,20 @@ class GraphicsTile(QGraphicsItem):
     def boundingRect(self):
         return QRectF(0, 0, self.slide_rect_0.width(), self.slide_rect_0.height())
 
-    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
+    def paint(
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+    ):
         # print("pos ", self.pos())
         # print("paint ", self.slide_rect_0, option.rect, option.exposedRect)
         self.pixmap = QPixmapCache.find(self.cache_key)
         if not self.pixmap:
             # print("read", self.slide_rect_0)
             with openslide.open_slide(self.slide_path) as slide:
-                tile_pilimage = slide.read_region((self.slide_rect_0.x(), self.slide_rect_0.y()),
-                                                  self.level, (self.slide_rect_0.width(), self.slide_rect_0.height()))
+                tile_pilimage = slide.read_region(
+                    (self.slide_rect_0.x(), self.slide_rect_0.y()),
+                    self.level,
+                    (self.slide_rect_0.width(), self.slide_rect_0.height()),
+                )
                 self.pixmap = self.pilimage_to_pixmap(tile_pilimage)
                 # self.pixmap.fill(Qt.red)
                 QPixmapCache.insert(self.cache_key, self.pixmap)
@@ -49,8 +64,9 @@ class GraphicsTile(QGraphicsItem):
         painter.drawPixmap(self.boundingRect().toRect(), self.pixmap)
 
     def __str__(self) -> str:
-        return "{}: slide_path: {}, slide_rect_0: {}".format(self.__class__.__name__, self.slide_path,
-                                                             self.slide_rect_0)
+        return "{}: slide_path: {}, slide_rect_0: {}".format(
+            self.__class__.__name__, self.slide_path, self.slide_rect_0
+        )
 
     def __repr__(self) -> str:
         return self.__str__()

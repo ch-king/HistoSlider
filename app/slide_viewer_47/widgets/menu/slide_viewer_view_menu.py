@@ -1,6 +1,14 @@
 from PyQt5.QtCore import QRectF, QSize
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFormLayout, QLineEdit, QHBoxLayout, QSpinBox, \
-    QMessageBox
+from PyQt5.QtWidgets import (
+    QDialog,
+    QDialogButtonBox,
+    QVBoxLayout,
+    QFormLayout,
+    QLineEdit,
+    QHBoxLayout,
+    QSpinBox,
+    QMessageBox,
+)
 
 from slide_viewer_47.common.json_utils import to_json
 from slide_viewer_47.common.level_builders import build_rects_and_color_alphas_for_grid
@@ -19,15 +27,24 @@ class SlideViewerViewMenu(MyMenu):
         self.slide_viewer = slide_viewer
 
         self.grid_action = MyAction("set gri&d size", self, self.on_set_grid_action)
-        self.toggle_grid_action = MyAction("&toggle grid", self, self.on_toggle_grid_action)
+        self.toggle_grid_action = MyAction(
+            "&toggle grid", self, self.on_toggle_grid_action
+        )
         self.go_to_action = MyAction("&go to", self, self.on_go_to_action)
-        self.take_screenshot_action = MyAction("&screenshot", self, self.on_take_screenshot_action)
-        self.print_items_action = MyAction("print &items", self, self.on_print_items_action)
-        self.print_slide_view_params_action = MyAction("print slide_&view_params", self,
-                                                       self.on_print_slide_view_params)
+        self.take_screenshot_action = MyAction(
+            "&screenshot", self, self.on_take_screenshot_action
+        )
+        self.print_items_action = MyAction(
+            "print &items", self, self.on_print_items_action
+        )
+        self.print_slide_view_params_action = MyAction(
+            "print slide_&view_params", self, self.on_print_slide_view_params
+        )
 
     def on_print_items_action(self):
-        items = self.slide_viewer.scene.items(self.slide_viewer.get_current_view_scene_rect())
+        items = self.slide_viewer.scene.items(
+            self.slide_viewer.get_current_view_scene_rect()
+        )
         print(items)
         QMessageBox.information(None, "Items", str(items))
 
@@ -60,16 +77,22 @@ class SlideViewerViewMenu(MyMenu):
 
         main_layout = QVBoxLayout()
         main_layout.addLayout(form_layout)
-        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog
+        )
         main_layout.addWidget(button_box)
         dialog.setLayout(main_layout)
         button_box.accepted.connect(dialog.accept)
         button_box.rejected.connect(dialog.reject)
         res = dialog.exec()
         if res == QDialog.Accepted:
-            rects, color_alphas = build_rects_and_color_alphas_for_grid((grid_w.value(), grid_h.value()),
-                                                                       self.slide_viewer.slide_helper.get_level_size(0))
-            self.slide_viewer.slide_graphics.update_grid_rects_0_level(rects, color_alphas)
+            rects, color_alphas = build_rects_and_color_alphas_for_grid(
+                (grid_w.value(), grid_h.value()),
+                self.slide_viewer.slide_helper.get_level_size(0),
+            )
+            self.slide_viewer.slide_graphics.update_grid_rects_0_level(
+                rects, color_alphas
+            )
 
     def on_go_to_action(self):
         dialog = QDialog()
@@ -90,7 +113,9 @@ class SlideViewerViewMenu(MyMenu):
 
         main_layout = QVBoxLayout()
         main_layout.addLayout(form_layout)
-        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog
+        )
         main_layout.addWidget(button_box)
         dialog.setLayout(main_layout)
         button_box.accepted.connect(dialog.accept)
@@ -116,17 +141,23 @@ class SlideViewerViewMenu(MyMenu):
 
         main_layout = QVBoxLayout()
         main_layout.addLayout(form_layout)
-        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog
+        )
         main_layout.addWidget(button_box)
         dialog.setLayout(main_layout)
         button_box.accepted.connect(dialog.accept)
         button_box.rejected.connect(dialog.reject)
         res = dialog.exec()
         if res == QDialog.Accepted:
-            image = build_screenshot_image(self.slide_viewer.scene, QSize(width.value(), height.value()),
-                                           self.slide_viewer.get_current_view_scene_rect())
+            image = build_screenshot_image(
+                self.slide_viewer.scene,
+                QSize(width.value(), height.value()),
+                self.slide_viewer.get_current_view_scene_rect(),
+            )
             image.save(filepath.text())
 
     def on_toggle_grid_action(self):
         self.slide_viewer.slide_graphics.update_grid_visibility(
-            not self.slide_viewer.slide_graphics.slide_view_params.grid_visible)
+            not self.slide_viewer.slide_graphics.slide_view_params.grid_visible
+        )

@@ -2,7 +2,7 @@ import openslide
 from PyQt5.QtCore import QRectF
 
 
-class SlideHelper():
+class SlideHelper:
     def __init__(self, slide_path: str):
         self.slide_path = slide_path
         with openslide.open_slide(slide_path) as slide:

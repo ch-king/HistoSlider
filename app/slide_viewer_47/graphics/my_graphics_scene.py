@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QGraphicsScene
 
 
 class MyGraphicsScene(QGraphicsScene):
-
     def __init__(self, parent: typing.Optional[QtCore.QObject] = None) -> None:
         super().__init__(parent)
 
