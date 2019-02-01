@@ -2,7 +2,7 @@ import os
 from functools import partial
 
 import psutil
-from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QModelIndex
+from PyQt5.QtCore import Qt, QTimer, QModelIndex
 from PyQt5.QtGui import QPixmapCache
 from PyQt5.QtWidgets import (
     QMainWindow,
@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (
     QAction,
 )
 
-from models.slide_list_model import SlideListModel
+from models.SlideTreeModel import SlideTreeModel
 from slide_viewer_47.common.slide_view_params import SlideViewParams
 from ui.MainWindow_ui import Ui_MainWindow
 from ui.SlideViewerWidget import SlideViewerWidget
@@ -36,15 +36,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.memory_usage_label = QLabel()
         self.statusBar.addPermanentWidget(self.memory_usage_label)
 
-        self.slide_list = SlideListModel()
-        self.treeViewSlides.setModel(self.slide_list)
-        self.treeViewSlides.customContextMenuRequested.connect(self.open_menu)
+        self.slide_list = SlideTreeModel()
+        self.treeViewOverview.setModel(self.slide_list)
+        self.treeViewOverview.customContextMenuRequested.connect(self.open_menu)
 
         self.actionOpenFile.triggered.connect(self.open_load_slide_dialog)
         self.actionExit.triggered.connect(lambda: QApplication.exit())
 
         # FOR TESTING PURPOSES!
-        self.load_slide("/home/anton/Downloads/CMU-1.tiff")
+        self.load_slide("/home/anton/Pictures/CMU-1.tiff")
 
     def open_menu(self, position):
         indexes = self.treeViewSlides.selectedIndexes()

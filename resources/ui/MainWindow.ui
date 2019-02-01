@@ -14,7 +14,7 @@
    <string>App</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayoutCentral">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
@@ -69,20 +69,17 @@
    </attribute>
    <addaction name="actionOpenFile"/>
   </widget>
-  <widget class="QDockWidget" name="dockWidgetSlides">
-   <property name="features">
-    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
-   </property>
+  <widget class="QDockWidget" name="dockWidgetOverview">
    <property name="windowTitle">
-    <string>Slides</string>
+    <string>Overview</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContentsSlides">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+   <widget class="QWidget" name="dockWidgetContentsOverview">
+    <layout class="QVBoxLayout" name="verticalLayoutOverview">
      <item>
-      <widget class="QTreeView" name="treeViewSlides">
+      <widget class="QTreeView" name="treeViewOverview">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
        </property>
@@ -94,10 +91,18 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidgetChannels">
-   <property name="features">
-    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+  <widget class="QDockWidget" name="dockWidgetSettings">
+   <property name="windowTitle">
+    <string>Settings</string>
    </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContentsSettings">
+    <layout class="QVBoxLayout" name="verticalLayoutSettings"/>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockWidgetChannels">
    <property name="windowTitle">
     <string>Channels</string>
    </property>
@@ -105,11 +110,7 @@
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContentsChannels">
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
-      <widget class="QListView" name="listViewChannels"/>
-     </item>
-    </layout>
+    <layout class="QVBoxLayout" name="verticalLayoutChannels"/>
    </widget>
   </widget>
   <action name="actionExit">
@@ -141,6 +142,7 @@
     <string>Open file...</string>
    </property>
   </action>
+  <zorder>dockWidgetSettings</zorder>
   <zorder>dockWidgetChannels</zorder>
  </widget>
  <resources>

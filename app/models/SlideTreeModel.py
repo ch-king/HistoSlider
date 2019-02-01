@@ -2,7 +2,7 @@ from PyQt5.QtCore import QModelIndex
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 
-class SlideListModel(QStandardItemModel):
+class SlideTreeModel(QStandardItemModel):
     def __init__(self):
         QStandardItemModel.__init__(self)
 
