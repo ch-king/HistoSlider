@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import QGraphicsScene
 
 
 class SlideGraphicsScene(QGraphicsScene):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self):
+        super().__init__()
         self.cur_downsample = 1
         self.cur_xywhds = (0, 0, 0, 0, 1)
         self.dirty = True

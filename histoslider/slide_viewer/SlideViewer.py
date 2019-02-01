@@ -7,7 +7,7 @@ from PyQt5.QtCore import (
     QRectF,
     QMarginsF,
     QObject,
-)
+    pyqtSignal)
 from PyQt5.QtGui import QWheelEvent, QMouseEvent, QTransform, QShowEvent
 from PyQt5.QtWidgets import (
     QWidget,
@@ -37,11 +37,12 @@ class SlideViewer(QWidget):
     def init_view(self):
         self.scene = SlideGraphicsScene()
         self.view = SlideGraphicsView(self.scene)
+        self.view.setDragMode(QGraphicsView.ScrollHandDrag)
         self.view.setTransformationAnchor(QGraphicsView.NoAnchor)
         self.view.viewport().installEventFilter(self)
 
         self.rubber_band = QRubberBand(QRubberBand.Rectangle, self)
-        self.mouse_press_view = QPoint()
+        self.mouse_press_view = None
 
         self.view.horizontalScrollBar().sliderMoved.connect(self.on_view_changed)
         self.view.verticalScrollBar().sliderMoved.connect(self.on_view_changed)
@@ -151,10 +152,10 @@ class SlideViewer(QWidget):
         # print("size when wheeling: ", self.view.viewport().size())
         zoom_in = self.zoom_step
         zoom_out = 1 / zoom_in
-        zoom_ = zoom_in if event.angleDelta().y() > 0 else zoom_out
-        self.update_scale(event.pos(), zoom_)
+        zoom = zoom_in if event.angleDelta().y() > 0 else zoom_out
+        self.update_scale(event.pos(), zoom)
         event.accept()
-        self.on_view_changed()
+        # self.on_view_changed()
         return True
 
     def process_mouse_event(self, event: QMouseEvent):
@@ -166,11 +167,8 @@ class SlideViewer(QWidget):
                 self.slide_graphics.update_grid_visibility(
                     not self.slide_graphics.slide_view_params.grid_visible
                 )
-                # items=self.scene.items()
-                # QMessageBox.information(None, "Items", str(items))
                 return True
-            # self.update_scale(QPoint(), 1.15)
-        elif event.button() == Qt.LeftButton:
+        elif event.button() == Qt.RightButton:
             if event.type() == QEvent.MouseButtonPress:
                 self.mouse_press_view = QPoint(event.pos())
                 self.rubber_band.setGeometry(QRect(self.mouse_press_view, QSize()))
@@ -184,16 +182,17 @@ class SlideViewer(QWidget):
                 )
                 self.update_labels()
                 self.scene.invalidate()
+                self.mouse_press_view = None
                 return True
         elif event.type() == QEvent.MouseMove:
             self.mouse_pos_scene_label.setText(
                 "mouse_scene: " + point_to_str(self.view.mapToScene(event.pos()))
             )
-            if not self.mouse_press_view.isNull():
+            if self.mouse_press_view:
                 self.rubber_band.setGeometry(
                     QRect(self.mouse_press_view, event.pos()).normalized()
                 )
-            return True
+                return True
 
         return False
 
@@ -208,7 +207,7 @@ class SlideViewer(QWidget):
         )
         self.slide_view_params.selected_rect_0_level = selected_qrectf_0_level.getRect()
 
-    def update_scale(self, mouse_pos: QPoint, zoom):
+    def update_scale(self, mouse_pos: QPoint, zoom: float):
         old_mouse_pos_scene = self.view.mapToScene(mouse_pos)
         old_view_scene_rect = self.view.mapToScene(
             self.view.viewport().rect()
@@ -249,7 +248,7 @@ class SlideViewer(QWidget):
         self.slide_graphics.update_visible_level(new_level)
         self.update_labels()
 
-    def get_best_level_for_scale(self, scale):
+    def get_best_level_for_scale(self, scale: float):
         scene_width = self.scene.sceneRect().size().width()
         candidates = [0]
         for level in self.slide_helper.levels:
