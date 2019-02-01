@@ -1,7 +1,7 @@
-QT for Python Application Boilerplate
+HistoSlider Application
 =============================
 
-This repository contains a boilerplate for QT for Python based applications.
+This repository contains a code for QT for Python based application.
 
 Getting started
 ---------------
@@ -14,7 +14,7 @@ Resources and translations
 --------------------------
 
 In order to ease the development process, the Qt Creator project
-`app.pro` is provided. You can open it to edit the UI files or to manage
+`histoslider.pro` is provided. You can open it to edit the UI files or to manage
 resources. Translations can be edited using Qt Linguist, part of the Qt
 SDK. In order to build the translations, you will need to have the
 `lrelease` command on your `PATH` or set its full path to the
@@ -30,7 +30,7 @@ Compiled application
 --------------------
 
 You can generate a *compiled* application so that end-users do not need
-to install anything. You can tweak some settings on the `app.spec` file.
+to install anything. You can tweak some settings on the `histoslider.spec` file.
 It can be generated like this:
 
     python setup.py bdist_app

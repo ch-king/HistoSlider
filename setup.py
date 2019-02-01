@@ -59,22 +59,22 @@ class bdist_app(Command):
 
     def run(self):
         self.run_command('build_res')
-        check_call(['pyinstaller', '-y', 'app.spec'])
+        check_call(['pyinstaller', '-y', 'histoslider.spec'])
 
 
 cmdclass['bdist_app'] = bdist_app
 
-setup(name='app',
+setup(name='histoslider',
       version="0.1.0",
       packages=find_packages(),
-      description='Qt for Python Boilerplate',
+      description='HistoSlider Application',
       author='Anton Rau',
-      author_email='anton.rau@gmail.com',
+      author_email='anton.rau@uzh.ch',
       license='MIT',
-      url='https://github.com/plankter/qt-boilerplate',
+      url='https://github.com/plankter/histoslider',
       install_requires=requirements,
       extras_require=extra_requirements,
       entry_points={
-          'gui_scripts': ['app=app.__main__:main'],
+          'gui_scripts': ['histoslider=histoslider.__main__:main'],
       },
       cmdclass=cmdclass)

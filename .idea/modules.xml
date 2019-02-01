@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/qt-boilerplate.iml" filepath="$PROJECT_DIR$/.idea/qt-boilerplate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/histoslider.iml" filepath="$PROJECT_DIR$/.idea/histoslider.iml" />
     </modules>
   </component>
 </project>

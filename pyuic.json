@@ -2,15 +2,15 @@
     "files": [
         [
             "resources/resources.qrc",
-            "app"
+            "histoslider"
         ],
         [
             "resources/ui/*.ui",
-            "app/ui"
+            "histoslider/ui"
         ],
         [
             "resources/widgets/*.ui",
-            "app/widgets"
+            "histoslider/widgets"
         ]
     ],
     "hooks": [],

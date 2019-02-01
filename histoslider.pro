@@ -1,7 +1,7 @@
 SOURCES += \
-    app/__init__.py \
-    app/__main__.py \
-    app/ui/MainWindow.py
+    histoslider/__init__.py \
+    histoslider/__main__.py \
+    histoslider/ui/MainWindow.py
 
 FORMS += \
     resources/ui/MainWindow.ui \

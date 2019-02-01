@@ -2,7 +2,7 @@
 
 block_cipher = None
 
-a = Analysis(['bin/app'],
+a = Analysis(['bin/histoslider'],
              pathex=['.'],
              binaries=None,
              datas=[],
@@ -17,7 +17,7 @@ pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
           exclude_binaries=True,
-          name='app',
+          name='HistoSlider',
           debug=False,
           strip=False,
           upx=True,
@@ -33,6 +33,6 @@ coll = COLLECT(exe,
                name='app')
 
 app = BUNDLE(coll,
-             name='App.app',
+             name='HistoSlider.app',
              icon='resources/icons/app.icns',
              bundle_identifier=None)
