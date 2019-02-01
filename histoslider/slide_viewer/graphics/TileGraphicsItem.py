@@ -1,21 +1,17 @@
-import typing
-
 import openslide
 from PIL.ImageQt import ImageQt
-from PyQt5.QtCore import QRectF, QRect, Qt, QSize
+from PyQt5.QtCore import QRectF, QRect, Qt
 from PyQt5.QtGui import QPixmap, QPainter
 from PyQt5.QtGui import QPixmapCache
 from PyQt5.QtWidgets import (
     QGraphicsItem,
-    QGraphicsPixmapItem,
-    QGraphicsRectItem,
     QWidget,
     QStyleOptionGraphicsItem,
 )
 
 
-class GraphicsTile(QGraphicsItem):
-    def __init__(self, x_y_w_h, slide_path, level, downsample):
+class TileGraphicsItem(QGraphicsItem):
+    def __init__(self, x_y_w_h, slide_path: str, level: int, downsample: float):
         super().__init__()
         self.x_y_w_h = x_y_w_h
         self.slide_rect_0 = QRect(
@@ -30,7 +26,6 @@ class GraphicsTile(QGraphicsItem):
         self.setAcceptedMouseButtons(Qt.NoButton)
         self.setAcceptHoverEvents(True)
         self.cache_key = slide_path + str(level) + str(self.slide_rect_0)
-
         # self.setCacheMode(QGraphicsItem.ItemCoordinateCache, self.slide_rect_0.size())
         # self.setFlag(QGraphicsItem.ItemClipsToShape, True)
 
@@ -45,11 +40,8 @@ class GraphicsTile(QGraphicsItem):
     def paint(
         self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
     ):
-        # print("pos ", self.pos())
-        # print("paint ", self.slide_rect_0, option.rect, option.exposedRect)
         self.pixmap = QPixmapCache.find(self.cache_key)
         if not self.pixmap:
-            # print("read", self.slide_rect_0)
             with openslide.open_slide(self.slide_path) as slide:
                 tile_pilimage = slide.read_region(
                     (self.slide_rect_0.x(), self.slide_rect_0.y()),
@@ -60,7 +52,6 @@ class GraphicsTile(QGraphicsItem):
                 # self.pixmap.fill(Qt.red)
                 QPixmapCache.insert(self.cache_key, self.pixmap)
 
-        # painter.drawPixmap(self.slide_rect_0, self.pixmap)
         painter.drawPixmap(self.boundingRect().toRect(), self.pixmap)
 
     def __str__(self) -> str:

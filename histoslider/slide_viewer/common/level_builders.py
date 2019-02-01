@@ -1,17 +1,18 @@
-from slide_viewer_47.common.slide_helper import SlideHelper
-from slide_viewer_47.common.utils import slice_rect, slice_rect2
-from slide_viewer_47.graphics.graphics_grid import GraphicsGrid
-from slide_viewer_47.graphics.graphics_tile import GraphicsTile
-from slide_viewer_47.graphics.my_graphics_group import MyGraphicsGroup
+from PyQt5.QtWidgets import QGraphicsItemGroup
+
+from slide_viewer.common.SlideHelper import SlideHelper
+from slide_viewer.common.utils import slice_rect, slice_rect2
+from slide_viewer.graphics.GridGraphicsItem import GridGraphicsItem
+from slide_viewer.graphics.TileGraphicsItem import TileGraphicsItem
 
 
 def build_tiles_level(level, tile_size, slide_helper: SlideHelper):
     level_size = slide_helper.get_level_size(level)
     tiles_rects = slice_rect(level_size, tile_size)
-    tiles_graphics_group = MyGraphicsGroup()
+    tiles_graphics_group = QGraphicsItemGroup()
     downsample = slide_helper.get_downsample_for_level(level)
     for tile_rect in tiles_rects:
-        item = GraphicsTile(tile_rect, slide_helper.get_slide_path(), level, downsample)
+        item = TileGraphicsItem(tile_rect, slide_helper.slide_path, level, downsample)
         item.moveBy(tile_rect[0], tile_rect[1])
         tiles_graphics_group.addToGroup(item)
 
@@ -58,5 +59,5 @@ def build_grid_level_from_rects(
         )
         for rect_0_level in rects_0_level
     ]
-    graphics_grid = GraphicsGrid(rects, intensities, [0, 0, *level_size])
+    graphics_grid = GridGraphicsItem(rects, intensities, [0, 0, *level_size])
     return graphics_grid

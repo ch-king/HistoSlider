@@ -1,17 +1,17 @@
 from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtWidgets import QGraphicsItemGroup
 
-from slide_viewer_47.common.level_builders import (
+from slide_viewer.common.level_builders import (
     build_tiles_level,
     build_grid_level_from_rects,
 )
-from slide_viewer_47.common.slide_view_params import SlideViewParams
-from slide_viewer_47.common.slide_helper import SlideHelper
-from slide_viewer_47.graphics.leveled_graphics_group import LeveledGraphicsGroup
-from slide_viewer_47.graphics.selected_graphics_rect import SelectedGraphicsRect
+from slide_viewer.common.SlideHelper import SlideHelper
+from slide_viewer.common.SlideViewParams import SlideViewParams
+from slide_viewer.graphics.LeveledGraphicsItemGroup import LeveledGraphicsItemGroup
+from slide_viewer.graphics.SelectedRectGraphicsItem import SelectedRectGraphicsItem
 
 
-class SlideGraphicsGroup(QGraphicsItemGroup):
+class SlideGraphicsItemGroup(QGraphicsItemGroup):
     def __init__(self, slide_view_params: SlideViewParams, preffered_rects_count=2000):
         super().__init__()
         self.slide_view_params = slide_view_params
@@ -27,10 +27,10 @@ class SlideGraphicsGroup(QGraphicsItemGroup):
         self.setAcceptedMouseButtons(Qt.NoButton)
         self.setAcceptHoverEvents(False)
 
-        self.levels = self.slide_helper.get_levels()
+        self.levels = self.slide_helper.levels
 
-        self.leveled_graphics_group = LeveledGraphicsGroup(self.levels, self)
-        self.leveled_graphics_selection = LeveledGraphicsGroup(self.levels, self)
+        self.leveled_graphics_group = LeveledGraphicsItemGroup(self.levels, self)
+        self.leveled_graphics_selection = LeveledGraphicsItemGroup(self.levels, self)
         self.leveled_groups = [
             self.leveled_graphics_group,
             self.leveled_graphics_selection,
@@ -88,7 +88,7 @@ class SlideGraphicsGroup(QGraphicsItemGroup):
                     selected_qrectf_0_level.topLeft() / downsample,
                     selected_qrectf_0_level.size() / downsample,
                 )
-                selected_graphics_rect = SelectedGraphicsRect(rect_for_level)
+                selected_graphics_rect = SelectedRectGraphicsItem(rect_for_level)
                 selected_graphics_rect.setZValue(20)
 
                 self.leveled_graphics_selection.clear_level(level)
@@ -104,7 +104,7 @@ class SlideGraphicsGroup(QGraphicsItemGroup):
         self.slide_view_params.level = visible_level
 
         if self.graphics_grid:
-            self.graphics_grid.update_downsmaple(
+            self.graphics_grid.update_downsample(
                 self.slide_helper.get_downsample_for_level(visible_level)
             )
 
@@ -116,7 +116,7 @@ class SlideGraphicsGroup(QGraphicsItemGroup):
     def update_grid_visibility(self, grid_visible):
         self.slide_view_params.grid_visible = grid_visible
         if self.graphics_grid:
-            self.graphics_grid.update_downsmaple(
+            self.graphics_grid.update_downsample(
                 self.slide_helper.get_downsample_for_level(self.slide_view_params.level)
             )
             self.graphics_grid.setVisible(grid_visible)

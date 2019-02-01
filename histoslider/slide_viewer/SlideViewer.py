@@ -5,7 +5,6 @@ from PyQt5.QtCore import (
     QRect,
     QSize,
     QRectF,
-    pyqtSignal,
     QMarginsF,
     QObject,
 )
@@ -16,18 +15,18 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QRubberBand,
-    QHBoxLayout,
-)
+    QHBoxLayout)
 
-from slide_viewer_47.common.slide_helper import SlideHelper
-from slide_viewer_47.common.slide_view_params import SlideViewParams
-from slide_viewer_47.common.utils import point_to_str
-from slide_viewer_47.graphics.my_graphics_scene import MyGraphicsScene
-from slide_viewer_47.graphics.slide_graphics_group import SlideGraphicsGroup
+from slide_viewer.SlideGraphicsScene import SlideGraphicsScene
+from slide_viewer.SlideGraphicsView import SlideGraphicsView
+from slide_viewer.common.SlideHelper import SlideHelper
+from slide_viewer.common.SlideViewParams import SlideViewParams
+from slide_viewer.common.utils import point_to_str
+from slide_viewer.graphics.SlideGraphicsItemGroup import SlideGraphicsItemGroup
 
 
 class SlideViewer(QWidget):
-    eventSignal = pyqtSignal(QEvent)
+    # eventSignal = pyqtSignal(QEvent)
 
     def __init__(self, parent: QWidget = None, viewer_top_else_left=True):
         super().__init__(parent)
@@ -36,9 +35,8 @@ class SlideViewer(QWidget):
         self.init_layout(viewer_top_else_left)
 
     def init_view(self):
-        self.scene = MyGraphicsScene()
-        self.view = QGraphicsView()
-        self.view.setScene(self.scene)
+        self.scene = SlideGraphicsScene()
+        self.view = SlideGraphicsView(self.scene)
         self.view.setTransformationAnchor(QGraphicsView.NoAnchor)
         self.view.viewport().installEventFilter(self)
 
@@ -79,7 +77,7 @@ class SlideViewer(QWidget):
         self.setLayout(main_layout)
 
     """
-    If you want to start view frome some point at some level, specify <level> and <level_rect> params.
+    If you want to start view from some point at some level, specify <level> and <level_rect> params.
     level_rect : rect in dimensions of slide at level=level. If None - fits the whole size of slide
     """
 
@@ -93,14 +91,14 @@ class SlideViewer(QWidget):
         self.slide_view_params = slide_view_params
         self.slide_helper = SlideHelper(slide_view_params.slide_path)
 
-        self.slide_graphics = SlideGraphicsGroup(
+        self.slide_graphics = SlideGraphicsItemGroup(
             slide_view_params, preffered_rects_count
         )
         self.scene.clear()
         self.scene.addItem(self.slide_graphics)
 
         if self.slide_view_params.level == -1 or self.slide_view_params.level is None:
-            self.slide_view_params.level = self.slide_helper.get_max_level()
+            self.slide_view_params.level = self.slide_helper.max_level
 
         self.slide_graphics.update_visible_level(self.slide_view_params.level)
         self.scene.setSceneRect(
@@ -128,7 +126,7 @@ class SlideViewer(QWidget):
         self.scale_initializer_deffered_function = scale_initializer_deffered_function
 
     def eventFilter(self, qobj: QObject, event: QEvent):
-        self.eventSignal.emit(event)
+        # self.eventSignal.emit(event)
         event_processed = False
         # print("size when event: ", event, event.type(), self.view.viewport().size())
         if isinstance(event, QShowEvent):
@@ -254,7 +252,7 @@ class SlideViewer(QWidget):
     def get_best_level_for_scale(self, scale):
         scene_width = self.scene.sceneRect().size().width()
         candidates = [0]
-        for level in self.slide_helper.get_levels():
+        for level in self.slide_helper.levels:
             w, h = self.slide_helper.get_level_size(level)
             if scene_width * scale <= w:
                 candidates.append(level)

@@ -5,10 +5,10 @@ from PyQt5.QtGui import QColor, QPainter
 from PyQt5.QtWidgets import QGraphicsItem, QStyleOptionGraphicsItem, QWidget
 
 
-class GraphicsGrid(QGraphicsItem):
+class GridGraphicsItem(QGraphicsItem):
     def __init__(
         self,
-        grid_rects_0_level,
+        grid_rects_0_level: int,
         color_alphas,
         bounding_rect,
         base_color_rgb=(0, 255, 0),
@@ -26,15 +26,11 @@ class GraphicsGrid(QGraphicsItem):
 
         self.star_map_ = starmap
 
-        self.color_alpha__rects_0_level = {}
+        self.color_alpha_rects_0_level = {}
         for color_alpha, grid_rect_0_level in zip(color_alphas, grid_rects_0_level):
-            self.color_alpha__rects_0_level.setdefault(color_alpha, []).append(
+            self.color_alpha_rects_0_level.setdefault(color_alpha, []).append(
                 grid_rect_0_level
             )
-
-        # self.color_alpha__rects_0_level = [[] for color_alpha in range(256)]
-        # for color_alpha, grid_rect_0_level in zip(color_alphas, grid_rects_0_level):
-        #     self.color_alpha__rects_0_level[color_alpha].append(grid_rect_0_level)
 
         self.recompute_bounding_rect()
 
@@ -46,7 +42,7 @@ class GraphicsGrid(QGraphicsItem):
             self.bounding_rect[3] / self.downsample,
         )
 
-    def update_downsmaple(self, downsample):
+    def update_downsample(self, downsample):
         self.downsample = downsample
         self.recompute_bounding_rect()
 
@@ -60,20 +56,10 @@ class GraphicsGrid(QGraphicsItem):
         scale = 1 / self.downsample
         painter.scale(scale, scale)
 
-        # for grid_rect, color in zip(self.grid_rects_0_level, self.color_alphas):
-        #     painter.setBrush(color)
-        #     painter.drawRect(*grid_rect)
-
-        for color_alpha, rects in self.color_alpha__rects_0_level.items():
+        for color_alpha, rects in self.color_alpha_rects_0_level.items():
             color = QColor(*self.base_color_rgb, color_alpha)
             painter.setBrush(color)
             qrectfs = self.star_map_(QRectF, rects)
             painter.drawRects(qrectfs)
 
-        # for color_alpha, rects in enumerate(self.color_alpha__rects_0_level):
-        #     if rects:
-        #         color = QColor(*self.base_color_rgb, color_alpha)
-        #         painter.setBrush(color)
-        #         qrectfs = self.star_map_(QRectF, rects)
-        #         painter.drawRects(qrectfs)
         painter.restore()

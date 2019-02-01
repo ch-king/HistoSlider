@@ -1,14 +1,12 @@
-import typing
-
-from PyQt5.QtCore import QRectF, Qt, QSize
+from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtGui import QPen, QColor, QPainter
 from PyQt5.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
 
 
-class SelectedGraphicsRect(QGraphicsItem):
+class SelectedRectGraphicsItem(QGraphicsItem):
     def __init__(self, qrectf: QRectF):
         super().__init__()
-        self.qrectf = QRectF(qrectf)
+        self.qrectf = qrectf
         self.setAcceptedMouseButtons(Qt.NoButton)
 
     def boundingRect(self):

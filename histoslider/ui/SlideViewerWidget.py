@@ -14,12 +14,12 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from slide_viewer_47.common.json_utils import to_json
-from slide_viewer_47.common.level_builders import build_rects_and_color_alphas_for_grid
-from slide_viewer_47.common.qt.my_spin_box import MySpinBox
-from slide_viewer_47.common.screenshot_builders import build_screenshot_image
-from slide_viewer_47.common.slide_view_params import SlideViewParams
-from slide_viewer_47.widgets.slide_viewer import SlideViewer
+from slide_viewer.common.json_utils import to_json
+from slide_viewer.common.level_builders import build_rects_and_color_alphas_for_grid
+from slide_viewer.common.qt.my_spin_box import MySpinBox
+from slide_viewer.common.screenshot_builders import build_screenshot_image
+from slide_viewer.common.SlideViewParams import SlideViewParams
+from slide_viewer.SlideViewer import SlideViewer
 from ui.SlideViewerWidget_ui import Ui_SliderViewerWidget
 
 
@@ -135,7 +135,7 @@ class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
         button_box.rejected.connect(dialog.reject)
         res = dialog.exec()
         if res == QDialog.Accepted:
-            slide_path = self.slide_viewer.slide_helper.get_slide_path()
+            slide_path = self.slide_viewer.slide_helper.slide_path
             qrectf = QRectF(x.value(), y.value(), width.value(), height.value())
             self.slide_viewer.load(SlideViewParams(slide_path, level.value(), qrectf))
 

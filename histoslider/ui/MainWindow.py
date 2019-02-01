@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import (
 )
 
 from models.SlideTreeModel import SlideTreeModel
-from slide_viewer_47.common.slide_view_params import SlideViewParams
+from slide_viewer.common.SlideViewParams import SlideViewParams
 from ui.MainWindow_ui import Ui_MainWindow
 from ui.SlideViewerWidget import SlideViewerWidget
 
@@ -47,7 +47,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.load_slide("/home/anton/Pictures/CMU-1.tiff")
 
     def open_menu(self, position):
-        indexes = self.treeViewSlides.selectedIndexes()
+        indexes = self.treeViewOverview.selectedIndexes()
 
         level = None
         if len(indexes) > 0:
@@ -57,7 +57,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 index = index.parent()
                 level += 1
 
-        menu = QMenu(self.treeViewSlides)
+        menu = QMenu(self.treeViewOverview)
 
         if level == 0:
             action = QAction("Delete slide", menu)
@@ -68,7 +68,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif level == 2:
             menu.addAction("Edit object")
 
-        menu.exec_(self.treeViewSlides.viewport().mapToGlobal(position))
+        menu.exec_(self.treeViewOverview.viewport().mapToGlobal(position))
 
     def delete_slide(self, indexes: [QModelIndex]):
         self.slide_list.delete_items(indexes)
