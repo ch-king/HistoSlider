@@ -37,11 +37,10 @@ class SlideViewer(QWidget):
     def init_view(self):
         self.scene = SlideGraphicsScene()
         self.view = SlideGraphicsView(self.scene)
-        self.view.setDragMode(QGraphicsView.ScrollHandDrag)
         self.view.setTransformationAnchor(QGraphicsView.NoAnchor)
         self.view.viewport().installEventFilter(self)
 
-        self.rubber_band = QRubberBand(QRubberBand.Rectangle, self)
+        self.rubber_band = QRubberBand(QRubberBand.Rectangle, self.view)
         self.mouse_press_view = None
 
         self.view.horizontalScrollBar().sliderMoved.connect(self.on_view_changed)
@@ -168,13 +167,22 @@ class SlideViewer(QWidget):
                     not self.slide_graphics.slide_view_params.grid_visible
                 )
                 return True
+        elif event.button() == Qt.LeftButton:
+            if event.type() == QEvent.MouseButtonPress:
+                self.view.setDragMode(QGraphicsView.ScrollHandDrag)
+                return False
+            elif event.type() == QEvent.MouseButtonRelease:
+                self.view.setDragMode(QGraphicsView.NoDrag)
+                return False
         elif event.button() == Qt.RightButton:
             if event.type() == QEvent.MouseButtonPress:
+                self.view.setDragMode(QGraphicsView.RubberBandDrag)
                 self.mouse_press_view = QPoint(event.pos())
                 self.rubber_band.setGeometry(QRect(self.mouse_press_view, QSize()))
                 self.rubber_band.show()
                 return True
             elif event.type() == QEvent.MouseButtonRelease:
+                self.view.setDragMode(QGraphicsView.NoDrag)
                 self.rubber_band.hide()
                 self.remember_selected_rect_params()
                 self.slide_graphics.update_selected_rect_0_level(
