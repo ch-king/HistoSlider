@@ -1,5 +1,5 @@
-from PyQt5.QtCore import QModelIndex
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PySide2.QtCore import QModelIndex
+from PySide2.QtGui import QStandardItemModel, QStandardItem
 
 
 class SlideTreeModel(QStandardItemModel):

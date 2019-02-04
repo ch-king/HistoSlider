@@ -1,7 +1,7 @@
 from math import ceil
 
-from PyQt5.QtCore import QRectF, QPoint, QPointF
-from PyQt5.QtGui import QPolygonF
+from PySide2.QtCore import QRectF, QPoint, QPointF
+from PySide2.QtGui import QPolygonF
 
 
 def slice_rect(rect_size, tile_size):

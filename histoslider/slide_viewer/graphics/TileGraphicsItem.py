@@ -1,9 +1,9 @@
 import openslide
 from PIL.ImageQt import ImageQt
-from PyQt5.QtCore import QRectF, QRect, Qt
-from PyQt5.QtGui import QPixmap, QPainter
-from PyQt5.QtGui import QPixmapCache
-from PyQt5.QtWidgets import (
+from PySide2.QtCore import QRectF, QRect, Qt
+from PySide2.QtGui import QPixmap, QPainter
+from PySide2.QtGui import QPixmapCache
+from PySide2.QtWidgets import (
     QGraphicsItem,
     QWidget,
     QStyleOptionGraphicsItem,
@@ -38,7 +38,7 @@ class TileGraphicsItem(QGraphicsItem):
         return QRectF(0, 0, self.slide_rect_0.width(), self.slide_rect_0.height())
 
     def paint(
-        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget = None
     ):
         self.pixmap = QPixmapCache.find(self.cache_key)
         if not self.pixmap:

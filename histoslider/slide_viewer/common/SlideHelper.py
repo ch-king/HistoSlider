@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 import openslide
-from PyQt5.QtCore import QRectF
+from PySide2.QtCore import QRectF
 
 
 class SlideHelper:

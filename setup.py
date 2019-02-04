@@ -5,7 +5,7 @@ from subprocess import check_call
 from setuptools import setup, find_packages, Command
 from setuptools.command.sdist import sdist
 
-requirements = ['PyQt5', 'openslide-python', 'psutil']
+requirements = ['PySide2', 'openslide-python', 'psutil']
 extra_requirements = {
     'dev': [
         'pytest',

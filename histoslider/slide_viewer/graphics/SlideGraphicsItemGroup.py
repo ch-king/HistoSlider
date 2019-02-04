@@ -1,5 +1,5 @@
-from PyQt5.QtCore import QRectF, Qt
-from PyQt5.QtWidgets import QGraphicsItemGroup
+from PySide2.QtCore import QRectF, Qt
+from PySide2.QtWidgets import QGraphicsItemGroup
 
 from slide_viewer.common.level_builders import (
     build_tiles_level,

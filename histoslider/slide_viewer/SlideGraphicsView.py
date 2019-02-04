@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGraphicsView
+from PySide2.QtWidgets import QGraphicsView
 
 
 class SlideGraphicsView(QGraphicsView):

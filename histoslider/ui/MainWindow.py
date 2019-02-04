@@ -2,9 +2,9 @@ import os
 from functools import partial
 
 import psutil
-from PyQt5.QtCore import Qt, QTimer, QModelIndex
-from PyQt5.QtGui import QPixmapCache
-from PyQt5.QtWidgets import (
+from PySide2.QtCore import Qt, QTimer, QModelIndex
+from PySide2.QtGui import QPixmapCache
+from PySide2.QtWidgets import (
     QMainWindow,
     QFileDialog,
     QLabel,

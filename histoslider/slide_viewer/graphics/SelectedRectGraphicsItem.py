@@ -1,6 +1,6 @@
-from PyQt5.QtCore import QRectF, Qt
-from PyQt5.QtGui import QPen, QColor, QPainter
-from PyQt5.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
+from PySide2.QtCore import QRectF, Qt
+from PySide2.QtGui import QPen, QColor, QPainter
+from PySide2.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
 
 
 class SelectedRectGraphicsItem(QGraphicsItem):
@@ -13,7 +13,7 @@ class SelectedRectGraphicsItem(QGraphicsItem):
         return self.qrectf
 
     def paint(
-        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget = None
     ):
         painter.save()
         pen = QPen(QColor(0, 0, 0, 255))

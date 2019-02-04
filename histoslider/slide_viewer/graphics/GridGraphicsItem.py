@@ -1,8 +1,8 @@
 from itertools import starmap
 
-from PyQt5.QtCore import QRectF, Qt
-from PyQt5.QtGui import QColor, QPainter
-from PyQt5.QtWidgets import QGraphicsItem, QStyleOptionGraphicsItem, QWidget
+from PySide2.QtCore import QRectF, Qt
+from PySide2.QtGui import QColor, QPainter
+from PySide2.QtWidgets import QGraphicsItem, QStyleOptionGraphicsItem, QWidget
 
 
 class GridGraphicsItem(QGraphicsItem):
@@ -50,7 +50,7 @@ class GridGraphicsItem(QGraphicsItem):
         return self.bounding_qrectf
 
     def paint(
-        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget = None
     ):
         painter.save()
         scale = 1 / self.downsample
@@ -60,6 +60,6 @@ class GridGraphicsItem(QGraphicsItem):
             color = QColor(*self.base_color_rgb, color_alpha)
             painter.setBrush(color)
             qrectfs = self.star_map_(QRectF, rects)
-            painter.drawRects(qrectfs)
+            painter.drawRects(list(qrectfs))
 
         painter.restore()

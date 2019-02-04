@@ -1,6 +1,6 @@
-from PyQt5.QtCore import QSize, QRectF, Qt, QSizeF, QPointF, QRect, QPoint
-from PyQt5.QtGui import QImage, QPainter
-from PyQt5.QtWidgets import QGraphicsScene, QGraphicsItemGroup, QGraphicsView
+from PySide2.QtCore import QSize, QRectF, Qt, QSizeF, QPointF, QRect, QPoint
+from PySide2.QtGui import QImage, QPainter
+from PySide2.QtWidgets import QGraphicsScene, QGraphicsItemGroup, QGraphicsView
 
 
 def paint_screenshot_image(

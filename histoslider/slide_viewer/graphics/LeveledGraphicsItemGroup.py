@@ -1,7 +1,7 @@
 from typing import List
 
-from PyQt5.QtCore import QRectF, Qt
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsItemGroup
+from PySide2.QtCore import QRectF, Qt
+from PySide2.QtWidgets import QGraphicsItem, QGraphicsItemGroup
 
 
 class LeveledGraphicsItemGroup(QGraphicsItemGroup):

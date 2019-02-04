@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGraphicsItemGroup
+from PySide2.QtWidgets import QGraphicsItemGroup
 
 from slide_viewer.common.SlideHelper import SlideHelper
 from slide_viewer.common.utils import slice_rect, slice_rect2

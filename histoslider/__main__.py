@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtCore import QFile, QTextStream
-from PyQt5.QtGui import QIcon, QPixmapCache
-from PyQt5.QtWidgets import QApplication
+from PySide2.QtCore import QFile, QTextStream
+from PySide2.QtGui import QIcon, QPixmapCache
+from PySide2.QtWidgets import QApplication
 
 from ui.MainWindow import MainWindow
 
