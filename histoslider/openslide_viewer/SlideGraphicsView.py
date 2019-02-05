@@ -92,13 +92,11 @@ class SlideGraphicsView(QGraphicsView):
     def mousePressEvent(self, event: QMouseEvent):
         if self.slide_helper is not None:
             if event.button() == Qt.MiddleButton:
-                self.slide_graphics.update_grid_visibility(
-                    not self.slide_graphics.slide_view_params.grid_visible
-                )
+                self.slide_graphics.update_grid_visibility(not self.slide_graphics.slide_view_params.grid_visible)
             elif event.button() == Qt.LeftButton:
                 self.setDragMode(QGraphicsView.ScrollHandDrag)
             elif event.button() == Qt.RightButton:
-                self.setDragMode(QGraphicsView.RubberBandDrag)
+                # self.setDragMode(QGraphicsView.RubberBandDrag)
                 self.mouse_press_view = QPoint(event.pos())
                 self.rubber_band.setGeometry(QRect(self.mouse_press_view, QSize()))
                 self.rubber_band.show()
@@ -111,10 +109,12 @@ class SlideGraphicsView(QGraphicsView):
             elif event.button() == Qt.RightButton:
                 self.setDragMode(QGraphicsView.NoDrag)
                 self.rubber_band.hide()
-                self.remember_selected_rect_params()
-                self.slide_graphics.update_selected_rect_0_level(
-                    self.slide_view_params.selected_rect_0_level
-                )
+                pos_scene = self.mapToScene(self.rubber_band.pos())
+                rect_scene = self.mapToScene(self.rubber_band.rect()).boundingRect()
+                downsample = self.slide_helper.get_downsample_for_level(self.slide_view_params.level)
+                selected_qrectf_0_level = QRectF(pos_scene * downsample, rect_scene.size() * downsample)
+                self.slide_view_params.selected_rect_0_level = selected_qrectf_0_level.getRect()
+                self.slide_graphics.update_selected_rect_0_level(self.slide_view_params.selected_rect_0_level)
                 self.slide_viewer_widget.slide_info_widget.update_labels()
                 self.scene.invalidate()
                 self.mouse_press_view = None
@@ -128,28 +128,14 @@ class SlideGraphicsView(QGraphicsView):
         super().mouseMoveEvent(event)
 
     def wheelEvent(self, event: QWheelEvent):
-        # print("size when wheeling: ", self.view.viewport().size())
         zoom_in = self.zoom_step
         zoom_out = 1 / zoom_in
         zoom = zoom_in if event.angleDelta().y() > 0 else zoom_out
         self.update_scale(event.pos(), zoom)
 
-    def remember_selected_rect_params(self):
-        pos_scene = self.mapToScene(self.rubber_band.pos())
-        rect_scene = self.mapToScene(self.rubber_band.rect()).boundingRect()
-        downsample = self.slide_helper.get_downsample_for_level(
-            self.slide_view_params.level
-        )
-        selected_qrectf_0_level = QRectF(
-            pos_scene * downsample, rect_scene.size() * downsample
-        )
-        self.slide_view_params.selected_rect_0_level = selected_qrectf_0_level.getRect()
-
     def update_scale(self, mouse_pos: QPoint, zoom: float):
         old_mouse_pos_scene = self.mapToScene(mouse_pos)
-        old_view_scene_rect = self.mapToScene(
-            self.viewport().rect()
-        ).boundingRect()
+        old_view_scene_rect = self.mapToScene(self.viewport().rect()).boundingRect()
 
         old_level = self.get_best_level_for_scale(self.get_current_view_scale())
         old_level_downsample = self.slide_helper.get_downsample_for_level(old_level)
