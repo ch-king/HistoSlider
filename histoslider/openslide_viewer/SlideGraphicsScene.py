@@ -3,5 +3,5 @@ from PyQt5.QtWidgets import QGraphicsScene
 
 
 class SlideGraphicsScene(QGraphicsScene):
-    def __init__(self, parent: QObject):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()

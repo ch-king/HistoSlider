@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from openslide_viewer.SlideViewer import SlideViewer
+from openslide_viewer.SlideGraphicsView import SlideGraphicsView
 from openslide_viewer.common.SlideViewParams import SlideViewParams
 from openslide_viewer.common.json_utils import to_json
 from openslide_viewer.common.level_builders import build_rects_and_color_alphas_for_grid
@@ -24,7 +24,7 @@ class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
         QWidget.__init__(self)
         self.setupUi(self)
 
-        self.slide_viewer = SlideViewer(self)
+        self.slide_viewer = SlideGraphicsView(self)
         self.slide_info_widget = SlideInfoWidget(self.slide_viewer)
 
         self.verticalLayout.addWidget(self.toolbar)
