@@ -2,7 +2,7 @@ import os
 from functools import partial
 
 import psutil
-from PyQt5.QtCore import Qt, QTimer, QModelIndex
+from PyQt5.QtCore import Qt, QTimer, QModelIndex, QSettings, QByteArray
 from PyQt5.QtGui import QPixmapCache
 from PyQt5.QtWidgets import (
     QMainWindow,
@@ -10,11 +10,10 @@ from PyQt5.QtWidgets import (
     QLabel,
     QApplication,
     QMenu,
-    QAction,
-)
+    QAction)
 
 from models.SlideTreeModel import SlideTreeModel
-from slide_viewer.common.SlideViewParams import SlideViewParams
+from openslide_viewer.common.SlideViewParams import SlideViewParams
 from ui.MainWindow_ui import Ui_MainWindow
 from ui.SlideViewerWidget import SlideViewerWidget
 
@@ -43,8 +42,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionOpenFile.triggered.connect(self.open_load_slide_dialog)
         self.actionExit.triggered.connect(lambda: QApplication.exit())
 
+        self.load_settings()
+
         # FOR TESTING PURPOSES!
         self.load_slide("/home/anton/Pictures/CMU-1.tiff")
+
+    def load_settings(self):
+        settings = QSettings()
+        self.restoreGeometry(settings.value("MainWindow/Geometry", QByteArray()))
+        self.restoreState(settings.value("MainWindow/State", QByteArray()))
+
+    def save_settings(self):
+        settings = QSettings()
+        settings.setValue("MainWindow/Geometry", self.saveGeometry())
+        settings.setValue("MainWindow/State", self.saveState())
 
     def open_menu(self, position):
         indexes = self.treeViewOverview.selectedIndexes()
@@ -161,3 +172,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         if file_path:
             self.load_slide(file_path)
+
+    def okToContinue(self):
+        return True
+
+    def closeEvent(self, event):
+        if self.okToContinue():
+            self.save_settings()
+
+            # close the openslide
+            try:
+                self.graphItem.image_item.img.close()
+            except:
+                pass
+        else:
+            event.ignore()

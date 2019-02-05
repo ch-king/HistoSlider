@@ -6,75 +6,43 @@ from PyQt5.QtCore import (
     QSize,
     QRectF,
     QMarginsF,
-    QObject,
-    pyqtSignal)
+    QObject)
 from PyQt5.QtGui import QWheelEvent, QMouseEvent, QTransform, QShowEvent
 from PyQt5.QtWidgets import (
     QWidget,
     QGraphicsView,
     QVBoxLayout,
-    QLabel,
-    QRubberBand,
-    QHBoxLayout)
+    QRubberBand)
 
-from slide_viewer.SlideGraphicsScene import SlideGraphicsScene
-from slide_viewer.SlideGraphicsView import SlideGraphicsView
-from slide_viewer.common.SlideHelper import SlideHelper
-from slide_viewer.common.SlideViewParams import SlideViewParams
-from slide_viewer.common.utils import point_to_str
-from slide_viewer.graphics.SlideGraphicsItemGroup import SlideGraphicsItemGroup
+from openslide_viewer.SlideGraphicsScene import SlideGraphicsScene
+from openslide_viewer.SlideGraphicsView import SlideGraphicsView
+from openslide_viewer.common.SlideHelper import SlideHelper
+from openslide_viewer.common.SlideViewParams import SlideViewParams
+from openslide_viewer.graphics.SlideGraphicsItemGroup import SlideGraphicsItemGroup
+from ui import SlideViewerWidget
+from ui.SlideInfoWidget import SlideInfoWidget
 
 
 class SlideViewer(QWidget):
     # eventSignal = pyqtSignal(QEvent)
 
-    def __init__(self, parent: QWidget = None, viewer_top_else_left=True):
+    def __init__(self, parent: SlideViewerWidget):
         super().__init__(parent)
-        self.init_view()
-        self.init_labels(word_wrap=viewer_top_else_left)
-        self.init_layout(viewer_top_else_left)
-
-    def init_view(self):
-        self.scene = SlideGraphicsScene()
-        self.view = SlideGraphicsView(self.scene)
-        self.view.setTransformationAnchor(QGraphicsView.NoAnchor)
+        self.slide_viewer_widget = parent
+        self.scene = SlideGraphicsScene(self)
+        self.view = SlideGraphicsView(self.scene, self.on_view_changed)
         self.view.viewport().installEventFilter(self)
 
         self.rubber_band = QRubberBand(QRubberBand.Rectangle, self.view)
         self.mouse_press_view = None
 
-        self.view.horizontalScrollBar().sliderMoved.connect(self.on_view_changed)
-        self.view.verticalScrollBar().sliderMoved.connect(self.on_view_changed)
         self.scale_initializer_deffered_function = None
         self.slide_view_params = None
         self.slide_helper = None
 
-    def init_labels(self, word_wrap):
-        # word_wrap = True
-        self.level_downsample_label = QLabel()
-        self.level_downsample_label.setWordWrap(word_wrap)
-        self.level_size_label = QLabel()
-        self.level_size_label.setWordWrap(word_wrap)
-        self.selected_rect_label = QLabel()
-        self.selected_rect_label.setWordWrap(word_wrap)
-        self.mouse_pos_scene_label = QLabel()
-        self.mouse_pos_scene_label.setWordWrap(word_wrap)
-        self.view_rect_scene_label = QLabel()
-        self.view_rect_scene_label.setWordWrap(word_wrap)
-        self.labels_layout = QVBoxLayout()
-        self.labels_layout.setAlignment(Qt.AlignTop)
-        self.labels_layout.addWidget(self.level_downsample_label)
-        self.labels_layout.addWidget(self.level_size_label)
-        self.labels_layout.addWidget(self.mouse_pos_scene_label)
-        # self.labels_layout.addWidget(self.selected_rect_label)
-        self.labels_layout.addWidget(self.view_rect_scene_label)
-
-    def init_layout(self, viewer_top_else_left=True):
-        main_layout = QVBoxLayout(self) if viewer_top_else_left else QHBoxLayout(self)
-        main_layout.addWidget(self.view)
-        main_layout.addLayout(self.labels_layout)
-        # main_layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(main_layout)
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.view)
+        self.setLayout(layout)
 
     """
     If you want to start view from some point at some level, specify <level> and <level_rect> params.
@@ -135,7 +103,6 @@ class SlideViewer(QWidget):
             """
             if self.scale_initializer_deffered_function:
                 # TODO labels start to occupy some space after view was already fitted, and labels will reduce size of viewport
-                # self.update_labels()
                 self.scale_initializer_deffered_function()
                 self.on_view_changed()
                 self.scale_initializer_deffered_function = None
@@ -188,14 +155,12 @@ class SlideViewer(QWidget):
                 self.slide_graphics.update_selected_rect_0_level(
                     self.slide_view_params.selected_rect_0_level
                 )
-                self.update_labels()
+                self.slide_viewer_widget.slide_info_widget.update_labels()
                 self.scene.invalidate()
                 self.mouse_press_view = None
                 return True
         elif event.type() == QEvent.MouseMove:
-            self.mouse_pos_scene_label.setText(
-                "mouse_scene: " + point_to_str(self.view.mapToScene(event.pos()))
-            )
+            self.slide_viewer_widget.slide_info_widget.update_mouse_pos(self.view.mapToScene(event.pos()))
             if self.mouse_press_view:
                 self.rubber_band.setGeometry(
                     QRect(self.mouse_press_view, event.pos()).normalized()
@@ -251,10 +216,10 @@ class SlideViewer(QWidget):
         new_rect = self.slide_helper.get_rect_for_level(new_level)
         self.scene.setSceneRect(new_rect)
         self.slide_view_params.level = new_level
-        self.reset_view_transform()
+        self.view.reset_view_transform()
         self.view.setTransform(transform, False)
         self.slide_graphics.update_visible_level(new_level)
-        self.update_labels()
+        self.slide_viewer_widget.slide_info_widget.update_labels()
 
     def get_best_level_for_scale(self, scale: float):
         scene_width = self.scene.sceneRect().size().width()
@@ -266,40 +231,12 @@ class SlideViewer(QWidget):
         best_level = max(candidates)
         return best_level
 
-    def update_labels(self):
-        level_downsample = self.slide_helper.get_downsample_for_level(
-            self.slide_view_params.level
-        )
-        level_size = self.slide_helper.get_level_size(self.slide_view_params.level)
-        self.level_downsample_label.setText(
-            "level, downsample: {}, {:.0f}".format(
-                self.slide_view_params.level, level_downsample
-            )
-        )
-        self.level_size_label.setText("level_size: ({}, {})".format(*level_size))
-        self.view_rect_scene_label.setText(
-            "view_scene: ({:.0f},{:.0f},{:.0f},{:.0f})".format(
-                *self.get_current_view_scene_rect().getRect()
-            )
-        )
-        if self.slide_view_params.selected_rect_0_level:
-            self.selected_rect_label.setText(
-                "selected rect (0-level): ({:.0f},{:.0f},{:.0f},{:.0f})".format(
-                    *self.slide_view_params.selected_rect_0_level
-                )
-            )
-
     def on_view_changed(self):
         if self.scale_initializer_deffered_function is None and self.slide_view_params:
             self.slide_view_params.level_rect = (
                 self.get_current_view_scene_rect().getRect()
             )
-        self.update_labels()
-
-    def reset_view_transform(self):
-        self.view.resetTransform()
-        self.view.horizontalScrollBar().setValue(0)
-        self.view.verticalScrollBar().setValue(0)
+        self.slide_viewer_widget.slide_info_widget.update_labels()
 
     def get_current_view_scene_rect(self):
         return self.view.mapToScene(self.view.viewport().rect()).boundingRect()

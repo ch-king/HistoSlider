@@ -13,7 +13,7 @@ class SelectedRectGraphicsItem(QGraphicsItem):
         return self.qrectf
 
     def paint(
-        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget = None
     ):
         painter.save()
         pen = QPen(QColor(0, 0, 0, 255))

@@ -38,7 +38,7 @@ class TileGraphicsItem(QGraphicsItem):
         return QRectF(0, 0, self.slide_rect_0.width(), self.slide_rect_0.height())
 
     def paint(
-        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget = None
     ):
         self.pixmap = QPixmapCache.find(self.cache_key)
         if not self.pixmap:

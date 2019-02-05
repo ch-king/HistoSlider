@@ -9,6 +9,9 @@ from ui.MainWindow import MainWindow
 
 def main():
     app = QApplication(sys.argv)
+    app.setOrganizationName("UZH Zurich")
+    app.setOrganizationDomain("http://www.bodenmillerlab.org")
+    app.setApplicationName("HistoSlider")
 
     cache_size_in_kb = 700 * 10 ** 3
     QPixmapCache.setCacheLimit(cache_size_in_kb)

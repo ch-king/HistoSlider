@@ -5,7 +5,12 @@ SOURCES += \
 
 FORMS += \
     resources/ui/MainWindow.ui \
-    resources/ui/SlideViewerWidget.ui
+    resources/ui/SlideViewerWidget.ui \
+    resources/ui/gotodialog.ui \
+    resources/ui/GoToDialog.ui \
+    resources/ui/GridSizeDialog.ui \
+    resources/ui/ScreenshotDialog.ui \
+    resources/ui/SlideInfoWidget.ui
 
 RESOURCES += \
     resources/resources.qrc \

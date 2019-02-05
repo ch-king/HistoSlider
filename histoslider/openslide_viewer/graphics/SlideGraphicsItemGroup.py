@@ -1,14 +1,14 @@
 from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtWidgets import QGraphicsItemGroup
 
-from slide_viewer.common.level_builders import (
+from openslide_viewer.common.level_builders import (
     build_tiles_level,
     build_grid_level_from_rects,
 )
-from slide_viewer.common.SlideHelper import SlideHelper
-from slide_viewer.common.SlideViewParams import SlideViewParams
-from slide_viewer.graphics.LeveledGraphicsItemGroup import LeveledGraphicsItemGroup
-from slide_viewer.graphics.SelectedRectGraphicsItem import SelectedRectGraphicsItem
+from openslide_viewer.common.SlideHelper import SlideHelper
+from openslide_viewer.common.SlideViewParams import SlideViewParams
+from openslide_viewer.graphics.LeveledGraphicsItemGroup import LeveledGraphicsItemGroup
+from openslide_viewer.graphics.SelectedRectGraphicsItem import SelectedRectGraphicsItem
 
 
 class SlideGraphicsItemGroup(QGraphicsItemGroup):

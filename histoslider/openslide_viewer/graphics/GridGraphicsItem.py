@@ -50,7 +50,7 @@ class GridGraphicsItem(QGraphicsItem):
         return self.bounding_qrectf
 
     def paint(
-        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget = None
     ):
         painter.save()
         scale = 1 / self.downsample
