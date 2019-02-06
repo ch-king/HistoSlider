@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QRectF
 from PyQt5.QtWidgets import QDialog
 
-from ui.GoToDialog_ui import Ui_GoToDialog
+from histoslider.ui.GoToDialog_ui import Ui_GoToDialog
 
 
 class GoToDialog(QDialog, Ui_GoToDialog):

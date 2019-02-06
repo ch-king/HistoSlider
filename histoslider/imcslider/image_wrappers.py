@@ -7,7 +7,7 @@ from PyQt5.QtGui import QImage, QPixmap
 from openslide import AbstractSlide, open_slide
 from pyqtgraph import ImageItem
 
-from utils.helpers import dummyImageDecorator
+from histoslider.imcslider.helpers import dummyImageDecorator
 
 
 class SlideImage(AbstractSlide):

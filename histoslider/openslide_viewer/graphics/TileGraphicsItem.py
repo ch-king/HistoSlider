@@ -40,19 +40,19 @@ class TileGraphicsItem(QGraphicsItem):
     def paint(
         self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget = None
     ):
-        self.pixmap = QPixmapCache.find(self.cache_key)
-        if not self.pixmap:
+        pixmap = QPixmapCache.find(self.cache_key)
+        if not pixmap:
             with openslide.open_slide(self.slide_path) as slide:
                 tile_pilimage = slide.read_region(
                     (self.slide_rect_0.x(), self.slide_rect_0.y()),
                     self.level,
                     (self.slide_rect_0.width(), self.slide_rect_0.height()),
                 )
-                self.pixmap = self.pilimage_to_pixmap(tile_pilimage)
-                # self.pixmap.fill(Qt.red)
-                QPixmapCache.insert(self.cache_key, self.pixmap)
+                pixmap = self.pilimage_to_pixmap(tile_pilimage)
+                # pixmap.fill(Qt.red)
+                QPixmapCache.insert(self.cache_key, pixmap)
 
-        painter.drawPixmap(self.boundingRect().toRect(), self.pixmap)
+        painter.drawPixmap(self.boundingRect().toRect(), pixmap)
 
     def __str__(self) -> str:
         return "{}: slide_path: {}, slide_rect_0: {}".format(

@@ -4,7 +4,7 @@ from functools import singledispatch
 from PyQt5.QtCore import QRectF, QRect
 from PyQt5.QtGui import QColor
 
-from openslide_viewer.common.SlideViewParams import SlideViewParams
+from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
 
 
 @singledispatch

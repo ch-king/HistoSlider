@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from openslide_viewer.common.SlideHelper import SlideHelper
+from histoslider.openslide_viewer.common.SlideHelper import SlideHelper
 
 
 class SlideViewParams:

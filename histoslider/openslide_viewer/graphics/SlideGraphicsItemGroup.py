@@ -1,14 +1,14 @@
 from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtWidgets import QGraphicsItemGroup
 
-from openslide_viewer.common.level_builders import (
+from histoslider.openslide_viewer.common.level_builders import (
     build_tiles_level,
     build_grid_level_from_rects,
 )
-from openslide_viewer.common.SlideHelper import SlideHelper
-from openslide_viewer.common.SlideViewParams import SlideViewParams
-from openslide_viewer.graphics.LeveledGraphicsItemGroup import LeveledGraphicsItemGroup
-from openslide_viewer.graphics.SelectedRectGraphicsItem import SelectedRectGraphicsItem
+from histoslider.openslide_viewer.common.SlideHelper import SlideHelper
+from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
+from histoslider.openslide_viewer.graphics.LeveledGraphicsItemGroup import LeveledGraphicsItemGroup
+from histoslider.openslide_viewer.graphics.SelectedRectGraphicsItem import SelectedRectGraphicsItem
 
 
 class SlideGraphicsItemGroup(QGraphicsItemGroup):
@@ -21,7 +21,6 @@ class SlideGraphicsItemGroup(QGraphicsItemGroup):
         t = ((slide_w * slide_h) / preffered_rects_count) ** 0.5
         if t < 1000:
             t = 1000
-        # t = 200
         self.tile_size = (int(t), int(t))
 
         self.setAcceptedMouseButtons(Qt.NoButton)
@@ -38,13 +37,8 @@ class SlideGraphicsItemGroup(QGraphicsItemGroup):
 
         self.graphics_grid = None
 
-        # print(slide_view_params.slide_path)
-        # print("=" * 100)
-        # with elapsed_timer() as elapsed:
         self.init_tiles_levels()
-        # print("init_tiles_levels", elapsed())
         self.init_grid_levels()
-        # print("init_grid_levels", elapsed())
         self.init_selected_rect_levels()
         self.update_visible_level(self.slide_view_params.level)
 

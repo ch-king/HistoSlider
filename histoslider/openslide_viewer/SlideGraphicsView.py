@@ -10,11 +10,11 @@ from PyQt5.QtWidgets import (
     QGraphicsView,
     QRubberBand)
 
-from openslide_viewer.SlideGraphicsScene import SlideGraphicsScene
-from openslide_viewer.common.SlideHelper import SlideHelper
-from openslide_viewer.common.SlideViewParams import SlideViewParams
-from openslide_viewer.graphics.SlideGraphicsItemGroup import SlideGraphicsItemGroup
-from ui import SlideViewerWidget
+from histoslider.openslide_viewer.SlideGraphicsScene import SlideGraphicsScene
+from histoslider.openslide_viewer.common.SlideHelper import SlideHelper
+from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
+from histoslider.openslide_viewer.graphics.SlideGraphicsItemGroup import SlideGraphicsItemGroup
+from histoslider.ui import SlideViewerWidget
 
 
 class SlideGraphicsView(QGraphicsView):

@@ -7,16 +7,16 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from openslide_viewer.SlideGraphicsView import SlideGraphicsView
-from openslide_viewer.common.SlideViewParams import SlideViewParams
-from openslide_viewer.common.json_utils import to_json
-from openslide_viewer.common.level_builders import build_rects_and_color_alphas_for_grid
-from openslide_viewer.common.screenshot_builders import build_screenshot_image
-from ui.GoToDialog import GoToDialog
-from ui.GridSizeDialog import GridSizeDialog
-from ui.ScreenshotDialog import ScreenshotDialog
-from ui.SlideInfoWidget import SlideInfoWidget
-from ui.SlideViewerWidget_ui import Ui_SliderViewerWidget
+from histoslider.openslide_viewer.SlideGraphicsView import SlideGraphicsView
+from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
+from histoslider.openslide_viewer.common.json_utils import to_json
+from histoslider.openslide_viewer.common.level_builders import build_rects_and_color_alphas_for_grid
+from histoslider.openslide_viewer.common.screenshot_builders import build_screenshot_image
+from histoslider.ui.GoToDialog import GoToDialog
+from histoslider.ui.GridSizeDialog import GridSizeDialog
+from histoslider.ui.ScreenshotDialog import ScreenshotDialog
+from histoslider.ui.SlideInfoWidget import SlideInfoWidget
+from histoslider.ui.SlideViewerWidget_ui import Ui_SliderViewerWidget
 
 
 class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
@@ -35,11 +35,11 @@ class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
     def toolbar(self) -> QToolBar:
         toolbar = QToolBar()
 
-        set_grid_size_action = QAction(QIcon(":/icons/grid.png"), "Grid Size", self)
+        set_grid_size_action = QAction("Grid size", self)
         set_grid_size_action.triggered.connect(self.set_grid_size)
         toolbar.addAction(set_grid_size_action)
 
-        show_grid_action = QAction("Show Grid", self)
+        show_grid_action = QAction(QIcon(":/icons/grid.png"), "Show Grid", self)
         show_grid_action.setCheckable(True)
         show_grid_action.triggered.connect(self.show_grid)
         toolbar.addAction(show_grid_action)
@@ -48,15 +48,15 @@ class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):
         go_to_action.triggered.connect(self.go_to)
         toolbar.addAction(go_to_action)
 
-        take_screenshot_action = QAction("Take Screenshot", self)
+        take_screenshot_action = QAction("Take screenshot", self)
         take_screenshot_action.triggered.connect(self.take_screenshot)
         toolbar.addAction(take_screenshot_action)
 
-        print_items_action = QAction("Print Items", self)
+        print_items_action = QAction("Print items", self)
         print_items_action.triggered.connect(self.print_items)
         toolbar.addAction(print_items_action)
 
-        print_slide_view_params_action = QAction("Print Slide View Params", self)
+        print_slide_view_params_action = QAction("Print slide params", self)
         print_slide_view_params_action.triggered.connect(self.print_slide_view_params)
         toolbar.addAction(print_slide_view_params_action)
 

@@ -8,5 +8,12 @@
         <file>icons/grid.png</file>
         <file>icons/open.svg</file>
         <file>icons/exit.png</file>
+        <file>icons/icons8-add-file-16.png</file>
+        <file>icons/icons8-add-new-16.png</file>
+        <file>icons/icons8-cancel.svg</file>
+        <file>icons/icons8-eukaryotic-cells-16.png</file>
+        <file>icons/icons8-save-16.png</file>
+        <file>icons/icons8-save-as-16.png</file>
+        <file>icons/icons8-switch-16.png</file>
     </qresource>
 </RCC>

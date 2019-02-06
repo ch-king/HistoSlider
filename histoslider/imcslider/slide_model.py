@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsScene, QGraphicsView, QApplication
 
-from utils.image_wrappers import GreyImageItem, SlideImageItem
+from histoslider.imcslider.image_wrappers import GreyImageItem, SlideImageItem
 
 __author__ = 'vitoz'
 

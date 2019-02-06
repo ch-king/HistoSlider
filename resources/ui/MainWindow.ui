@@ -43,7 +43,10 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionOpenFile"/>
+    <addaction name="actionOpenWorkspace"/>
+    <addaction name="actionSaveWorkspace"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpenSlide"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -67,7 +70,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionOpenFile"/>
+   <addaction name="actionOpenSlide"/>
   </widget>
   <widget class="QDockWidget" name="dockWidgetOverview">
    <property name="windowTitle">
@@ -130,16 +133,40 @@
     <string>About</string>
    </property>
   </action>
-  <action name="actionOpenFile">
+  <action name="actionOpenSlide">
    <property name="icon">
     <iconset resource="../resources.qrc">
      <normaloff>:/icons/open.svg</normaloff>:/icons/open.svg</iconset>
    </property>
    <property name="text">
-    <string>Open</string>
+    <string>Open Slide</string>
    </property>
    <property name="toolTip">
-    <string>Open file...</string>
+    <string>Open slide...</string>
+   </property>
+  </action>
+  <action name="actionOpenWorkspace">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/open.svg</normaloff>:/icons/open.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Open Workspace</string>
+   </property>
+   <property name="toolTip">
+    <string>Open workspace...</string>
+   </property>
+  </action>
+  <action name="actionSaveWorkspace">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/icons8-save-16.png</normaloff>:/icons/icons8-save-16.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Workspace</string>
+   </property>
+   <property name="toolTip">
+    <string>Save workspace...</string>
    </property>
   </action>
   <zorder>dockWidgetSettings</zorder>

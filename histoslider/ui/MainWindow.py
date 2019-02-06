@@ -10,12 +10,14 @@ from PyQt5.QtWidgets import (
     QLabel,
     QApplication,
     QMenu,
-    QAction)
+    QAction, QDialog, QWidget)
 
-from models.SlideTreeModel import SlideTreeModel
-from openslide_viewer.common.SlideViewParams import SlideViewParams
-from ui.MainWindow_ui import Ui_MainWindow
-from ui.SlideViewerWidget import SlideViewerWidget
+from histoslider.models.DataManager import DataManager
+from histoslider.models.SlideData import SlideData
+from histoslider.models.WorkspaceTreeModel import WorkspaceTreeModel
+from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
+from histoslider.ui.MainWindow_ui import Ui_MainWindow
+from histoslider.ui.SlideViewerWidget import SlideViewerWidget
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -35,11 +37,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.memory_usage_label = QLabel()
         self.statusBar.addPermanentWidget(self.memory_usage_label)
 
-        self.slide_list = SlideTreeModel()
+        self.slide_list = WorkspaceTreeModel()
         self.treeViewOverview.setModel(self.slide_list)
         self.treeViewOverview.customContextMenuRequested.connect(self.open_menu)
 
-        self.actionOpenFile.triggered.connect(self.open_load_slide_dialog)
+        self.actionOpenSlide.triggered.connect(self.load_slide_dialog)
+        self.actionOpenWorkspace.triggered.connect(self.load_workspace_dialog)
+        self.actionSaveWorkspace.triggered.connect(self.save_workspace_dialog)
         self.actionExit.triggered.connect(lambda: QApplication.exit())
 
         self.load_settings()
@@ -56,6 +60,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         settings = QSettings()
         settings.setValue("MainWindow/Geometry", self.saveGeometry())
         settings.setValue("MainWindow/State", self.saveState())
+
+    def load_workspace_dialog(self):
+        options = QFileDialog.Options()
+        file_ext = "*.json"
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Load HistoSlider Workspace",
+            "",
+            "Workspace Files ({})".format(file_ext),
+            options=options,
+        )
+        if file_path:
+            DataManager.load_workspace(file_path)
+
+    def save_workspace_dialog(self):
+        file_ext = "*.json"
+        dialog = QFileDialog(self)
+        dialog.setDefaultSuffix(".json")
+        dialog.setAcceptMode(QFileDialog.AcceptSave)
+        dialog.setWindowTitle("Save Workspace")
+        dialog.setNameFilter("Workspace Files ({})".format(file_ext))
+        if dialog.exec() == QDialog.Accepted:
+            DataManager.save_workspace(dialog.selectedFiles()[0])
 
     def open_menu(self, position):
         indexes = self.treeViewOverview.selectedIndexes()
@@ -81,9 +108,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         menu.exec_(self.treeViewOverview.viewport().mapToGlobal(position))
 
-    def delete_slide(self, indexes: [QModelIndex]):
-        self.slide_list.delete_items(indexes)
-
     def update_memory_usage(self):
         # return the memory usage in MB
         mem = self.process.memory_info()[0] / float(2 ** 20)
@@ -93,9 +117,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         viewer = SlideViewerWidget()
         viewer.slide_viewer.load(SlideViewParams(file_path))
         file_name = os.path.basename(file_path)
-        self.tabWidget.addTab(viewer, file_name)
+        DataManager.workspace.add_slide(SlideData(file_name))
+        tab_index = self.tabWidget.addTab(viewer, file_name)
         self.slide_list.add_item(file_name)
         QPixmapCache.clear()
+
+    def delete_slide(self, indexes: [QModelIndex]):
+        for index in indexes:
+            name = index.data()
+            slide_data = DataManager.workspace.find_child(name)
+            DataManager.workspace.delete_slide(slide_data)
+            page = self.tabWidget.findChild(name)
+            index = self.tabWidget.indexOf(page)
+            self.tabWidget.removeTab(index)
+        self.slide_list.delete_items(indexes)
 
     @property
     def available_formats(self):
@@ -159,7 +194,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ]
         return available_extensions
 
-    def open_load_slide_dialog(self):
+    def load_slide_dialog(self):
         options = QFileDialog.Options()
         file_ext_strings = ["*" + ext for ext in self.available_formats]
         file_ext_string = " ".join(file_ext_strings)
@@ -173,17 +208,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file_path:
             self.load_slide(file_path)
 
+    @property
     def okToContinue(self):
         return True
 
     def closeEvent(self, event):
-        if self.okToContinue():
+        if self.okToContinue:
             self.save_settings()
-
-            # close the openslide
-            try:
-                self.graphItem.image_item.img.close()
-            except:
-                pass
-        else:
-            event.ignore()

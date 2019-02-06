@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QGraphicsItemGroup
 
-from openslide_viewer.common.SlideHelper import SlideHelper
-from openslide_viewer.common.utils import slice_rect, slice_rect2
-from openslide_viewer.graphics.GridGraphicsItem import GridGraphicsItem
-from openslide_viewer.graphics.TileGraphicsItem import TileGraphicsItem
+from histoslider.openslide_viewer.common.SlideHelper import SlideHelper
+from histoslider.openslide_viewer.common.utils import slice_rect, slice_rect2
+from histoslider.openslide_viewer.graphics.GridGraphicsItem import GridGraphicsItem
+from histoslider.openslide_viewer.graphics.TileGraphicsItem import TileGraphicsItem
 
 
 def build_tiles_level(level, tile_size, slide_helper: SlideHelper):

@@ -1,36 +1,16 @@
-from PyQt5.QtCore import QAbstractItemModel, Signal, Slot, QModelIndex, Qt, QRectF
-from PyQt5.QtWidgets import QTreeView, QMenu, QAction
+from PyQt5.QtCore import QAbstractItemModel, QModelIndex, Qt, QRectF, Slot, Signal
 
 from histoslider.imcslider.Roi import RoiCircle
-from histoslider.imcslider.data_classes import RootData, data_parser, AlignPointsContainer, AlignPoints
+from histoslider.imcslider.data_classes import AlignPointsContainer, AlignPoints, RootData, data_parser
 from histoslider.imcslider.helpers import save_json, load_json
-
-__author__ = 'vitoz'
-
-
-class SlidesTreeView(QTreeView):
-    def selectionChanged(self, new, old):
-        super().selectionChanged(new, old)
-
-    def openTreeContextMenu(self, position):
-        idx = self.indexAt(position)
-        obj = self.model().getItem(idx)
-
-        menu = QMenu()
-        if obj.data_type != 'align_points_container':
-            add_apc = QAction(self)
-            add_apc.setText('Add align point container')
-            add_apc.triggered.connect(lambda: self.model().add_align_points_container(parent_idx=idx))
-            menu.addAction(add_apc)
-
-        menu.exec_(self.viewport().mapToGlobal(position))
 
 
 class TreeModel(QAbstractItemModel):
+
     changed_showed = Signal(QModelIndex)
 
     def __init__(self, data_list, parent=None):
-        super(TreeModel, self).__init__(parent)
+        super().__init__(parent)
         self.rootItem = None
         self.entry_dict = self.setupModelData(data_list)
         # test
@@ -46,7 +26,7 @@ class TreeModel(QAbstractItemModel):
     def columnCount(self, parent=QModelIndex()):
         return self.rootItem.columnCount()
 
-    def data(self, index, role):
+    def data(self, index: QModelIndex, role):
         if not index.isValid():
             return None
 
@@ -65,13 +45,13 @@ class TreeModel(QAbstractItemModel):
         item = self.getItem(index)
         return item.data(index.column())
 
-    def flags(self, index):
+    def flags(self, index: QModelIndex):
         if not index.isValid():
             return 0
         item = index.internalPointer()
         return item.flags(index.column())
 
-    def getItem(self, index):
+    def getItem(self, index: QModelIndex):
         if index.isValid():
             item = index.internalPointer()
             if item:
@@ -112,7 +92,7 @@ class TreeModel(QAbstractItemModel):
 
         return success
 
-    def parent(self, index):
+    def parent(self, index: QModelIndex):
         if not index.isValid():
             return QModelIndex()
 

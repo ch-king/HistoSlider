@@ -3,8 +3,9 @@ import re
 import uuid
 
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QGraphicsItem
 
-from utils.helpers import default_value, IdBasedProperty
+from histoslider.imcslider.helpers import default_value, IdBasedProperty
 
 """
 Hierarchy:
@@ -160,7 +161,7 @@ class AbstractData:
                     return itemList
 
     def generate_graphics_item(self, parent=None, scene=None):
-        gi = qg.QGraphicsItem(parent=parent, scene=scene)
+        gi = QGraphicsItem(parent=parent, scene=scene)
         self.graph_item = gi
         return True
 
