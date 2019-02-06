@@ -1,8 +1,10 @@
+from histoslider.models.TreeModel import TreeModel
 from histoslider.models.WorkspaceData import WorkspaceData
 
 
 class DataManager:
     workspace = WorkspaceData("Workspace")
+    tree_model = TreeModel(workspace)
 
     @staticmethod
     def load_workspace(path: str):

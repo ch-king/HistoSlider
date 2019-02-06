@@ -10,11 +10,10 @@ from PyQt5.QtWidgets import (
     QLabel,
     QApplication,
     QMenu,
-    QAction, QDialog, QWidget)
+    QAction, QDialog, QWidget, QAbstractItemView)
 
 from histoslider.models.DataManager import DataManager
 from histoslider.models.SlideData import SlideData
-from histoslider.models.WorkspaceTreeModel import WorkspaceTreeModel
 from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
 from histoslider.ui.MainWindow_ui import Ui_MainWindow
 from histoslider.ui.SlideViewerWidget import SlideViewerWidget
@@ -37,9 +36,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.memory_usage_label = QLabel()
         self.statusBar.addPermanentWidget(self.memory_usage_label)
 
-        self.slide_list = WorkspaceTreeModel()
-        self.treeViewOverview.setModel(self.slide_list)
+        self.treeViewOverview.setModel(DataManager.tree_model)
         self.treeViewOverview.customContextMenuRequested.connect(self.open_menu)
+        self.treeViewOverview.setSelectionBehavior(QAbstractItemView.SelectItems)
 
         self.actionOpenSlide.triggered.connect(self.load_slide_dialog)
         self.actionOpenWorkspace.triggered.connect(self.load_workspace_dialog)
@@ -97,13 +96,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         menu = QMenu(self.treeViewOverview)
 
-        if level == 0:
+        if level == 1:
             action = QAction("Delete slide", menu)
             action.triggered.connect(partial(self.delete_slide, indexes))
             menu.addAction(action)
-        elif level == 1:
-            menu.addAction("Edit object/container")
         elif level == 2:
+            menu.addAction("Edit object/container")
+        elif level == 3:
             menu.addAction("Edit object")
 
         menu.exec_(self.treeViewOverview.viewport().mapToGlobal(position))
@@ -117,20 +116,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         viewer = SlideViewerWidget()
         viewer.slide_viewer.load(SlideViewParams(file_path))
         file_name = os.path.basename(file_path)
-        DataManager.workspace.add_slide(SlideData(file_name))
+        DataManager.workspace.addChild(SlideData(file_name))
         tab_index = self.tabWidget.addTab(viewer, file_name)
-        self.slide_list.add_item(file_name)
         QPixmapCache.clear()
 
     def delete_slide(self, indexes: [QModelIndex]):
         for index in indexes:
-            name = index.data()
-            slide_data = DataManager.workspace.find_child(name)
-            DataManager.workspace.delete_slide(slide_data)
-            page = self.tabWidget.findChild(name)
-            index = self.tabWidget.indexOf(page)
-            self.tabWidget.removeTab(index)
-        self.slide_list.delete_items(indexes)
+            DataManager.tree_model.beginRemoveRows(index.parent(), index.row(), index.row())
+            success = DataManager.tree_model.removeRow(index.row(), parent=index.parent())
+            print('Removal was a succes?:', success)
+            DataManager.tree_model.endRemoveRows()
 
     @property
     def available_formats(self):
