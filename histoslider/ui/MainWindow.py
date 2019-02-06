@@ -116,8 +116,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         viewer = SlideViewerWidget()
         viewer.slide_viewer.load(SlideViewParams(file_path))
         file_name = os.path.basename(file_path)
+        DataManager.tree_model.beginResetModel()
         DataManager.workspace.addChild(SlideData(file_name))
         tab_index = self.tabWidget.addTab(viewer, file_name)
+        DataManager.tree_model.endResetModel()
         QPixmapCache.clear()
 
     def delete_slide(self, indexes: [QModelIndex]):
