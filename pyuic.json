@@ -5,12 +5,8 @@
             "histoslider"
         ],
         [
-            "resources/ui/*.ui",
+            "histoslider/ui/*.ui",
             "histoslider/ui"
-        ],
-        [
-            "resources/widgets/*.ui",
-            "histoslider/widgets"
         ]
     ],
     "hooks": [],

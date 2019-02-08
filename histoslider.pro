@@ -4,12 +4,12 @@ SOURCES += \
     histoslider/ui/main_window.py
 
 FORMS += \
-    resources/ui/main_window.ui \
-    resources/ui/slide_viewer_widget.ui \
-    resources/ui/go_to_dialog.ui \
-    resources/ui/grid_size_dialog.ui \
-    resources/ui/screenshot_dialog.ui \
-    resources/ui/slide_info_widget.ui
+    histoslider/ui/main_window.ui \
+    histoslider/ui/slide_viewer_widget.ui \
+    histoslider/ui/go_to_dialog.ui \
+    histoslider/ui/grid_size_dialog.ui \
+    histoslider/ui/screenshot_dialog.ui \
+    histoslider/ui/slide_info_widget.ui
 
 RESOURCES += \
     resources/resources.qrc \

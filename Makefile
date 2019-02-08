@@ -25,14 +25,8 @@ coverage: ## check code coverage
 build_resources:
 	pyrcc5 ./resources/resources.qrc -o $(SOURCE_DIR)/resources_rc.py
 
-UI_FILES := $(shell find $(SOURCE_DIR) -name "*.ui")
-build_ui:
-	@for file in $(UI_FILES) ; do \
-      	pyuic5 $$file -o "$(basename $$file .ui)_ui.py" ; \
-    done
-#	$(shell find $(SOURCE_DIR) -name "*.ui" -exec sh -c 'pyuic5 "{}" -o "$(basename "{}" .ui)_ui.py"' \;)
-#	find $(SOURCE_DIR) -name "*.ui" -exec sh -c 'echo {} | sed -r "s/(.+)/\1/"' \;
-build: build_resources build_ui
+build:
+	python setup.py build_res
 
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
