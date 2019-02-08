@@ -10,15 +10,15 @@ from PyQt5.QtWidgets import (
     QGraphicsView,
     QRubberBand)
 
-from histoslider.openslide_viewer.SlideGraphicsScene import SlideGraphicsScene
-from histoslider.openslide_viewer.common.SlideHelper import SlideHelper
-from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
-from histoslider.openslide_viewer.graphics.SlideGraphicsItemGroup import SlideGraphicsItemGroup
-from histoslider.ui import SlideViewerWidget
+from histoslider.openslide_viewer.slide_graphics_scene import SlideGraphicsScene
+from histoslider.openslide_viewer.common.slide_helper import SlideHelper
+from histoslider.openslide_viewer.common.slide_view_params import SlideViewParams
+from histoslider.openslide_viewer.graphics.slide_graphics_item_group import SlideGraphicsItemGroup
+from histoslider.ui import slide_viewer_widget
 
 
 class SlideGraphicsView(QGraphicsView):
-    def __init__(self, parent: SlideViewerWidget):
+    def __init__(self, parent: slide_viewer_widget):
         super().__init__(parent)
         self.slide_viewer_widget = parent
         self.setTransformationAnchor(QGraphicsView.NoAnchor)

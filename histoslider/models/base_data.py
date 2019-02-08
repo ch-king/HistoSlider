@@ -5,6 +5,13 @@ from PyQt5.QtCore import Qt
 
 
 class BaseData:
+
+    column_flags = (Qt.ItemIsEnabled | Qt.ItemIsSelectable,
+                Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable,
+                Qt.ItemIsEnabled | Qt.ItemIsUserCheckable)
+
+    column_names = ('Type', 'Name', 'Show')
+
     def __init__(self, name: str):
         self.id = uuid.uuid4().int
         self.name = name
@@ -12,10 +19,11 @@ class BaseData:
         self._parent = None
         self._children = []
         self._row = 0
+        self._checked = False
 
     @property
     def column_data(self):
-        return [self.__class__.__name__, self.name, False]
+        return (self.__class__.__name__, self.name, self._checked)
 
     def to_json(self):
         return jsonpickle.encode(self)
@@ -23,16 +31,6 @@ class BaseData:
     @classmethod
     def from_json(cls, json):
         return jsonpickle.decode(json)
-
-    @property
-    def column_names(self):
-        return ['Type', 'Name', 'Show']
-
-    @property
-    def column_flags(self):
-        return [Qt.ItemIsEnabled | Qt.ItemIsSelectable,
-                Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable,
-                Qt.ItemIsEnabled | Qt.ItemIsUserCheckable | Qt.ItemIsEditable]
 
     def columnCount(self):
         return len(self.column_names)
@@ -65,3 +63,22 @@ class BaseData:
     def data(self, column: int):
         if 0 <= column < self.columnCount():
             return self.column_data[column]
+
+    def setData(self, column: int, value):
+        column_name = self.column_names[column]
+        if column_name == 'Name':
+            self.name = str(value)
+            return True
+        elif column_name == 'Show':
+            return self.set_checked(bool(value))
+        return False
+
+    def flags(self, column: int):
+        return self.column_flags[column]
+
+    def checked(self):
+        return self._checked
+
+    def set_checked(self, state: bool):
+        self._checked = state
+        return True

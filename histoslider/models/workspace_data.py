@@ -1,5 +1,5 @@
-from histoslider.models import SlideData
-from histoslider.models.BaseData import BaseData
+from histoslider.models import slide_data
+from histoslider.models.base_data import BaseData
 
 
 class WorkspaceData(BaseData):

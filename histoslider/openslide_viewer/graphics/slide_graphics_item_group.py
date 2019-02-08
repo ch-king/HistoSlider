@@ -5,10 +5,10 @@ from histoslider.openslide_viewer.common.level_builders import (
     build_tiles_level,
     build_grid_level_from_rects,
 )
-from histoslider.openslide_viewer.common.SlideHelper import SlideHelper
-from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
-from histoslider.openslide_viewer.graphics.LeveledGraphicsItemGroup import LeveledGraphicsItemGroup
-from histoslider.openslide_viewer.graphics.SelectedRectGraphicsItem import SelectedRectGraphicsItem
+from histoslider.openslide_viewer.common.slide_helper import SlideHelper
+from histoslider.openslide_viewer.common.slide_view_params import SlideViewParams
+from histoslider.openslide_viewer.graphics.leveled_graphics_item_group import LeveledGraphicsItemGroup
+from histoslider.openslide_viewer.graphics.selected_rect_graphics_item import SelectedRectGraphicsItem
 
 
 class SlideGraphicsItemGroup(QGraphicsItemGroup):

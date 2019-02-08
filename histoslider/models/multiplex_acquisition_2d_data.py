@@ -1,4 +1,4 @@
-from histoslider.models.BaseData import BaseData
+from histoslider.models.base_data import BaseData
 
 
 class MultiplexAcquisition2DData(BaseData):

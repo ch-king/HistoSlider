@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QDialog
 
-from histoslider.ui.ScreenshotDialog_ui import Ui_ScreenshotDialog
+from histoslider.ui.screenshot_dialog_ui import Ui_ScreenshotDialog
 
 
 class ScreenshotDialog(QDialog, Ui_ScreenshotDialog):

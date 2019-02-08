@@ -4,7 +4,7 @@ from PyQt5.QtCore import QFile, QTextStream
 from PyQt5.QtGui import QIcon, QPixmapCache
 from PyQt5.QtWidgets import QApplication
 
-from histoslider.ui.MainWindow import MainWindow
+from histoslider.ui.main_window import MainWindow
 
 
 def main():

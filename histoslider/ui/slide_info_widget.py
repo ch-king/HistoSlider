@@ -2,7 +2,7 @@ from PyQt5.QtCore import QPointF
 from PyQt5.QtWidgets import QWidget
 
 from histoslider.openslide_viewer.common.utils import point_to_str
-from histoslider.ui.SlideInfoWidget_ui import Ui_SlideInfoWidget
+from histoslider.ui.slide_info_widget_ui import Ui_SlideInfoWidget
 
 
 class SlideInfoWidget(QWidget, Ui_SlideInfoWidget):

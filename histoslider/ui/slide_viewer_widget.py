@@ -7,16 +7,16 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from histoslider.openslide_viewer.SlideGraphicsView import SlideGraphicsView
-from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
+from histoslider.openslide_viewer.slide_graphics_view import SlideGraphicsView
+from histoslider.openslide_viewer.common.slide_view_params import SlideViewParams
 from histoslider.openslide_viewer.common.json_utils import to_json
 from histoslider.openslide_viewer.common.level_builders import build_rects_and_color_alphas_for_grid
 from histoslider.openslide_viewer.common.screenshot_builders import build_screenshot_image
-from histoslider.ui.GoToDialog import GoToDialog
-from histoslider.ui.GridSizeDialog import GridSizeDialog
-from histoslider.ui.ScreenshotDialog import ScreenshotDialog
-from histoslider.ui.SlideInfoWidget import SlideInfoWidget
-from histoslider.ui.SlideViewerWidget_ui import Ui_SliderViewerWidget
+from histoslider.ui.go_to_dialog import GoToDialog
+from histoslider.ui.grid_size_dialog import GridSizeDialog
+from histoslider.ui.screenshot_dialog import ScreenshotDialog
+from histoslider.ui.slide_info_widget import SlideInfoWidget
+from histoslider.ui.slide_viewer_widget_ui import Ui_SliderViewerWidget
 
 
 class SlideViewerWidget(QWidget, Ui_SliderViewerWidget):

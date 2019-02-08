@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QDialog
 
-from histoslider.ui.GridSizeDialog_ui import Ui_GridSizeDialog
+from histoslider.ui.grid_size_dialog_ui import Ui_GridSizeDialog
 
 
 class GridSizeDialog(QDialog, Ui_GridSizeDialog):

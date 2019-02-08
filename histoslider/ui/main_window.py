@@ -12,11 +12,11 @@ from PyQt5.QtWidgets import (
     QMenu,
     QAction, QDialog, QWidget, QAbstractItemView)
 
-from histoslider.models.DataManager import DataManager
-from histoslider.models.SlideData import SlideData
-from histoslider.openslide_viewer.common.SlideViewParams import SlideViewParams
-from histoslider.ui.MainWindow_ui import Ui_MainWindow
-from histoslider.ui.SlideViewerWidget import SlideViewerWidget
+from histoslider.models.data_manager import DataManager
+from histoslider.models.slide_data import SlideData
+from histoslider.openslide_viewer.common.slide_view_params import SlideViewParams
+from histoslider.ui.main_window_ui import Ui_MainWindow
+from histoslider.ui.slide_viewer_widget import SlideViewerWidget
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -72,6 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         if file_path:
             DataManager.load_workspace(file_path)
+            self.treeViewOverview.setModel(DataManager.tree_model)
 
     def save_workspace_dialog(self):
         file_ext = "*.json"
@@ -114,20 +115,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def load_slide(self, file_path):
         viewer = SlideViewerWidget()
-        viewer.slide_viewer.load(SlideViewParams(file_path))
         file_name = os.path.basename(file_path)
-        DataManager.tree_model.beginResetModel()
-        DataManager.workspace.addChild(SlideData(file_name))
         tab_index = self.tabWidget.addTab(viewer, file_name)
+        DataManager.tree_model.beginResetModel()
+        DataManager.workspace.addChild(SlideData(file_name, tab_index))
         DataManager.tree_model.endResetModel()
+        viewer.slide_viewer.load(SlideViewParams(file_path))
         QPixmapCache.clear()
 
     def delete_slide(self, indexes: [QModelIndex]):
         for index in indexes:
             DataManager.tree_model.beginRemoveRows(index.parent(), index.row(), index.row())
+            item = DataManager.tree_model.getItem(index)
+            self.tabWidget.removeTab(item.tab_index)
             success = DataManager.tree_model.removeRow(index.row(), parent=index.parent())
-            print('Removal was a succes?:', success)
             DataManager.tree_model.endRemoveRows()
+        QPixmapCache.clear()
 
     @property
     def available_formats(self):

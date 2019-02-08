@@ -1,5 +1,5 @@
-from histoslider.models.TreeModel import TreeModel
-from histoslider.models.WorkspaceData import WorkspaceData
+from histoslider.models.tree_model import TreeModel
+from histoslider.models.workspace_data import WorkspaceData
 
 
 class DataManager:
@@ -12,6 +12,7 @@ class DataManager:
             workspace = WorkspaceData.from_json(file.read())
         workspace.path = path
         DataManager.workspace = workspace
+        DataManager.tree_model = TreeModel(DataManager.workspace)
         return workspace
 
     @staticmethod

@@ -1,6 +1,6 @@
-from histoslider.models.Acquisition2DData import Acquisition2DData
-from histoslider.models.SlideData import SlideData
-from histoslider.models.WorkspaceData import WorkspaceData
+from histoslider.models.acquisition_2d_data import Acquisition2DData
+from histoslider.models.slide_data import SlideData
+from histoslider.models.workspace_data import WorkspaceData
 
 
 def test_models():
