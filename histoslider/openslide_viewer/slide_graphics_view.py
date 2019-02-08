@@ -8,9 +8,8 @@ from PyQt5.QtCore import (
 from PyQt5.QtGui import QWheelEvent, QMouseEvent, QTransform
 from PyQt5.QtWidgets import (
     QGraphicsView,
-    QRubberBand)
+    QRubberBand, QGraphicsScene)
 
-from histoslider.openslide_viewer.slide_graphics_scene import SlideGraphicsScene
 from histoslider.openslide_viewer.common.slide_helper import SlideHelper
 from histoslider.openslide_viewer.common.slide_view_params import SlideViewParams
 from histoslider.openslide_viewer.graphics.slide_graphics_item_group import SlideGraphicsItemGroup
@@ -25,7 +24,7 @@ class SlideGraphicsView(QGraphicsView):
         self.horizontalScrollBar().sliderMoved.connect(self.on_view_changed)
         self.verticalScrollBar().sliderMoved.connect(self.on_view_changed)
 
-        self.scene = SlideGraphicsScene()
+        self.scene = QGraphicsScene()
         self.setScene(self.scene)
 
         self.rubber_band = QRubberBand(QRubberBand.Rectangle, self)

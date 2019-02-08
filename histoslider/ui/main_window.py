@@ -36,7 +36,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.memory_usage_label = QLabel()
         self.statusBar.addPermanentWidget(self.memory_usage_label)
 
-        self.treeViewOverview.setModel(DataManager.tree_model)
+        self.treeViewOverview.setModel(DataManager.workspace_model)
         self.treeViewOverview.customContextMenuRequested.connect(self.open_menu)
         self.treeViewOverview.setSelectionBehavior(QAbstractItemView.SelectItems)
 
@@ -72,7 +72,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         if file_path:
             DataManager.load_workspace(file_path)
-            self.treeViewOverview.setModel(DataManager.tree_model)
 
     def save_workspace_dialog(self):
         file_ext = "*.json"
@@ -117,19 +116,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         viewer = SlideViewerWidget()
         file_name = os.path.basename(file_path)
         tab_index = self.tabWidget.addTab(viewer, file_name)
-        DataManager.tree_model.beginResetModel()
-        DataManager.workspace.addChild(SlideData(file_name, tab_index))
-        DataManager.tree_model.endResetModel()
+        DataManager.workspace_model.beginResetModel()
+        DataManager.workspace_model.workspace_data.addChild(SlideData(file_name, tab_index))
+        DataManager.workspace_model.endResetModel()
         viewer.slide_viewer.load(SlideViewParams(file_path))
         QPixmapCache.clear()
 
     def delete_slide(self, indexes: [QModelIndex]):
         for index in indexes:
-            DataManager.tree_model.beginRemoveRows(index.parent(), index.row(), index.row())
-            item = DataManager.tree_model.getItem(index)
+            DataManager.workspace_model.beginRemoveRows(index.parent(), index.row(), index.row())
+            item = DataManager.workspace_model.getItem(index)
             self.tabWidget.removeTab(item.tab_index)
-            success = DataManager.tree_model.removeRow(index.row(), parent=index.parent())
-            DataManager.tree_model.endRemoveRows()
+            success = DataManager.workspace_model.removeRow(index.row(), parent=index.parent())
+            DataManager.workspace_model.endRemoveRows()
         QPixmapCache.clear()
 
     @property

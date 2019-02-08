@@ -1,22 +1,24 @@
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, Qt, pyqtSignal
 
+from histoslider.models.workspace_data import WorkspaceData
 
-class TreeModel(QAbstractItemModel):
+
+class WorkspaceModel(QAbstractItemModel):
 
     changed_showed = pyqtSignal(QModelIndex)
 
-    def __init__(self, root_data, parent=None):
-        super(TreeModel, self).__init__(parent)
-        self._root = root_data
+    def __init__(self, parent=None):
+        super(WorkspaceModel, self).__init__(parent)
+        self.workspace_data = WorkspaceData("Workspace")
 
     def rowCount(self, index: QModelIndex):
         if index.isValid():
             return index.internalPointer().childCount()
-        return self._root.childCount()
+        return self.workspace_data.childCount()
 
     def addChild(self, node, parent: QModelIndex = None):
         if not parent or not parent.isValid():
-            parent = self._root
+            parent = self.workspace_data
         else:
             parent = parent.internalPointer()
         parent.addChild(node)
@@ -25,7 +27,7 @@ class TreeModel(QAbstractItemModel):
         if not parent or not parent.isValid():
             # parent is not valid when it is the root node, since the "parent"
             # method returns an empty QModelIndex
-            parentNode = self._root
+            parentNode = self.workspace_data
         else:
             parentNode = parent.internalPointer()  # the node
         return parentNode.removeChild(row)
@@ -36,7 +38,7 @@ class TreeModel(QAbstractItemModel):
             if item:
                 return item
 
-        return self._root
+        return self.workspace_data
 
     def index(self, row, column, parent: QModelIndex = QModelIndex()):
         if parent.isValid() and parent.column() != 0:
@@ -59,7 +61,7 @@ class TreeModel(QAbstractItemModel):
     def columnCount(self, index: QModelIndex):
         if index.isValid():
             return index.internalPointer().columnCount()
-        return self._root.columnCount()
+        return self.workspace_data.columnCount()
 
     def data(self, index: QModelIndex, role):
         if not index.isValid():
@@ -105,6 +107,16 @@ class TreeModel(QAbstractItemModel):
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
-            return self._root.column_names[section]
+            return self.workspace_data.column_names[section]
 
         return None
+
+    def load_workspace(self, path: str):
+        with open(path, 'r') as file:
+            self.workspace_data = WorkspaceData.from_json(file.read())
+        self.workspace_data.path = path
+
+    def save_workspace(self, path: str):
+        self.workspace_data.path = path
+        with open(path, 'w') as file:
+            file.write(self.workspace_data.to_json())
