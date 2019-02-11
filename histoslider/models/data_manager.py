@@ -1,8 +1,10 @@
+from histoslider.core.hub import Hub
 from histoslider.models.workspace_model import WorkspaceModel
 
 
 class DataManager:
     workspace_model = WorkspaceModel()
+    hub = Hub()
 
     @staticmethod
     def load_workspace(path: str):

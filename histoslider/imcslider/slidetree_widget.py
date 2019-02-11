@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QTreeView, QMenu, QAction
 
 from histoslider.imcslider.Roi import RoiCircle
 from histoslider.imcslider.data_classes import RootData, data_parser, AlignPointsContainer, AlignPoints
-from histoslider.imcslider.helpers import save_json, load_json
+from histoslider.image.helpers import save_json, load_json
 
 __author__ = 'vitoz'
 

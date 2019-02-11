@@ -5,7 +5,7 @@ import uuid
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGraphicsItem
 
-from histoslider.imcslider.helpers import default_value, IdBasedProperty
+from histoslider.image.helpers import default_value, IdBasedProperty
 
 """
 Hierarchy:

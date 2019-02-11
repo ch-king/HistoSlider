@@ -10,15 +10,20 @@ from PyQt5.QtWidgets import (
     QGraphicsView,
     QRubberBand, QGraphicsScene)
 
+from histoslider.core.hub_listener import HubListener
+from histoslider.core.message import TreeViewCurrentItemChangedMessage
+from histoslider.models.channel_data import ChannelData
+from histoslider.models.data_manager import DataManager
 from histoslider.openslide_viewer.common.slide_helper import SlideHelper
 from histoslider.openslide_viewer.common.slide_view_params import SlideViewParams
 from histoslider.openslide_viewer.graphics.slide_graphics_item_group import SlideGraphicsItemGroup
 from histoslider.ui import slide_viewer_widget
 
 
-class SlideGraphicsView(QGraphicsView):
+class SlideGraphicsView(QGraphicsView, HubListener):
     def __init__(self, parent: slide_viewer_widget):
-        super().__init__(parent)
+        QGraphicsView.__init__(self, parent)
+        HubListener.__init__(self)
         self.slide_viewer_widget = parent
         self.setTransformationAnchor(QGraphicsView.NoAnchor)
         self.horizontalScrollBar().sliderMoved.connect(self.on_view_changed)
@@ -33,6 +38,15 @@ class SlideGraphicsView(QGraphicsView):
         self.scale_initializer_deffered_function = None
         self.slide_view_params = None
         self.slide_helper = None
+
+        self.register_to_hub(DataManager.hub)
+
+    def register_to_hub(self, hub):
+        hub.subscribe(self, TreeViewCurrentItemChangedMessage, self._on_current_item_changed)
+
+    def _on_current_item_changed(self, message: TreeViewCurrentItemChangedMessage):
+        if isinstance(message.item, ChannelData):
+            print(message.item)
 
     """
     If you want to start view from some point at some level, specify <level> and <level_rect> params.

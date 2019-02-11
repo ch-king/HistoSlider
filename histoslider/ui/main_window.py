@@ -2,7 +2,7 @@ import os
 from functools import partial
 
 import psutil
-from PyQt5.QtCore import Qt, QTimer, QModelIndex, QSettings, QByteArray
+from PyQt5.QtCore import Qt, QTimer, QModelIndex, QSettings, QByteArray, QItemSelection
 from PyQt5.QtGui import QPixmapCache
 from PyQt5.QtWidgets import (
     QMainWindow,
@@ -10,13 +10,19 @@ from PyQt5.QtWidgets import (
     QLabel,
     QApplication,
     QMenu,
-    QAction, QDialog, QWidget, QAbstractItemView)
+    QAction, QDialog, QWidget, QAbstractItemView, QGraphicsView)
 
+from histoslider.core.message import TreeViewCurrentItemChangedMessage
+from histoslider.image.image_item import ImageItem
+from histoslider.image.slide_item import SlideItem
+from histoslider.image.slide_scene import SlideScene
+from histoslider.image.slide_view import SlideView
 from histoslider.models.data_manager import DataManager
 from histoslider.models.slide_data import SlideData
 from histoslider.openslide_viewer.common.slide_view_params import SlideViewParams
 from histoslider.ui.main_window_ui import Ui_MainWindow
 from histoslider.ui.slide_viewer_widget import SlideViewerWidget
+from histoslider.utils.mcd_loader import McdLoader
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -38,7 +44,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.treeViewOverview.setModel(DataManager.workspace_model)
         self.treeViewOverview.customContextMenuRequested.connect(self.open_menu)
-        self.treeViewOverview.setSelectionBehavior(QAbstractItemView.SelectItems)
+        self.treeViewOverview.selectionModel().selectionChanged.connect(self._treeview_selection_changed)
+        self.treeViewOverview.selectionModel().currentChanged.connect(self._treeview_current_changed)
+
+        self.scene = SlideScene()
+        self.graphItem = SlideItem()
+        self.viewer = SlideView(self.scene, self)
+
+        self.tabWidget.addTab(self.viewer, "Blend")
 
         self.actionOpenSlide.triggered.connect(self.load_slide_dialog)
         self.actionOpenWorkspace.triggered.connect(self.load_workspace_dialog)
@@ -47,8 +60,70 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.load_settings()
 
-        # FOR TESTING PURPOSES!
-        self.load_slide("/home/anton/Pictures/CMU-1.tiff")
+    def _treeview_current_changed(self, current: QModelIndex, previous: QModelIndex):
+        if current.isValid():
+            item = current.model().getItem(current)
+            DataManager.hub.broadcast(TreeViewCurrentItemChangedMessage(self, item))
+
+    def _treeview_selection_changed(self, selected: QItemSelection, deselected: QItemSelection):
+        indexes = selected.indexes()
+        for i in indexes:
+            item = i.model().getItem(i)
+            pass
+        # if hasattr(item, 'get_filename'):
+        #     self.load_image(os.path.join(self.globalPath, item.get_filename()),
+        #                     RGB=item.RGB, slide=item.slide)
+        #
+        #     proxy_model = self.channel_widget.model()
+        #     if hasattr(item, 'channels'):
+        #         channel_model = cw.ImageChannelTableModel(image_item=item)
+        #         # retireve old sort column and order
+        #         col = proxy_model.sortColumn()
+        #         ord = proxy_model.sortOrder()
+        #
+        #         proxy_model.setSourceModel(channel_model)
+        #         try:
+        #             proxy_model.sort(col, ord)
+        #         except:
+        #             pass
+        #
+        #         selection = self.channel_widget.selectionModel()
+        #         selection.selectionChanged.connect(self.channel_widget_selection_change)
+        #     else:
+        #         channel_model= cw.ChannelTableModel()
+        #         proxy_model.setSourceModel(channel_model)
+
+    def load_image(self, filename: str = None, RGB: bool = True, slide: bool = False):
+        if filename is None:
+            action = self.sender()
+            if isinstance(action, QAction):
+                filename = action.data()
+            else:
+                return
+        if filename:
+            self.scene.removeItem(self.graphItem)
+            if slide:
+                self.graphItem = SlideItem(scene=self.scn)
+                success = self.graphItem.loadImage(filename, RGB)
+
+            else:
+                self.graphItem = ImageItem(scene=self.scn)
+                success = self.graphItem.loadImage(filename, RGB)
+
+            if not success:
+                message = "Failed to read {}".format(filename)
+            else:
+                self.addRecentFile(filename)
+                self.scn.setSceneRect(self.graphItem.boundingRect())
+                self.histogram.setImageItem(self.graphItem.image_item)
+                self.histogram.autoHistogramRange()
+                self.showImage()
+                self.dirty = False
+                self.sizeLabel.setText("{} x {}".format(
+                    self.scn.width(), self.scn.height()))
+                message = "Loaded {}".format(os.path.basename(filename))
+
+            self.updateStatus(message)
 
     def load_settings(self):
         settings = QSettings()
@@ -112,15 +187,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         mem = self.process.memory_info()[0] / float(2 ** 20)
         self.memory_usage_label.setText(f"Memory usage: {mem:.2f} Mb")
 
-    def load_slide(self, file_path):
+    def load_slide(self, file_path: str):
         viewer = SlideViewerWidget()
         file_name = os.path.basename(file_path)
         tab_index = self.tabWidget.addTab(viewer, file_name)
         DataManager.workspace_model.beginResetModel()
-        DataManager.workspace_model.workspace_data.addChild(SlideData(file_name, tab_index))
+        slide = SlideData(file_name, file_path)
+        DataManager.workspace_model.workspace_data.add_slide(slide)
         DataManager.workspace_model.endResetModel()
         viewer.slide_viewer.load(SlideViewParams(file_path))
         QPixmapCache.clear()
+
+    def load_mcd(self, file_path: str):
+        loader = McdLoader(file_path)
+        slide = loader.load()
+        DataManager.workspace_model.beginResetModel()
+        DataManager.workspace_model.workspace_data.add_slide(slide)
+        DataManager.workspace_model.endResetModel()
 
     def delete_slide(self, indexes: [QModelIndex]):
         for index in indexes:
@@ -146,6 +229,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             "bif",
             "mrxs",
             "bif",
+            "mcd"
         ]
         pillow_formats = [
             "bmp",
@@ -205,7 +289,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             options=options,
         )
         if file_path:
-            self.load_slide(file_path)
+            self.load_mcd(file_path)
 
     @property
     def okToContinue(self):

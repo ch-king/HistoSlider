@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file '/home/anton/bblab/histoslider/histoslider/ui/main_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -44,7 +45,7 @@ class Ui_MainWindow(object):
         self.verticalLayoutOverview.setObjectName("verticalLayoutOverview")
         self.treeViewOverview = QtWidgets.QTreeView(self.dockWidgetContentsOverview)
         self.treeViewOverview.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.treeViewOverview.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.treeViewOverview.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.treeViewOverview.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.treeViewOverview.setObjectName("treeViewOverview")
         self.verticalLayoutOverview.addWidget(self.treeViewOverview)
@@ -121,5 +122,6 @@ class Ui_MainWindow(object):
         self.actionOpenWorkspace.setToolTip(_translate("MainWindow", "Open workspace..."))
         self.actionSaveWorkspace.setText(_translate("MainWindow", "Save Workspace"))
         self.actionSaveWorkspace.setToolTip(_translate("MainWindow", "Save workspace..."))
+
 
 import resources_rc

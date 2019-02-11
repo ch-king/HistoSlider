@@ -87,7 +87,7 @@
         <enum>Qt::CustomContextMenu</enum>
        </property>
        <property name="selectionMode">
-        <enum>QAbstractItemView::ExtendedSelection</enum>
+        <enum>QAbstractItemView::SingleSelection</enum>
        </property>
        <property name="selectionBehavior">
         <enum>QAbstractItemView::SelectRows</enum>
@@ -121,7 +121,7 @@
   </widget>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources/resources.qrc">
      <normaloff>:/icons/exit.png</normaloff>:/icons/exit.png</iconset>
    </property>
    <property name="text">
@@ -138,7 +138,7 @@
   </action>
   <action name="actionOpenSlide">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources/resources.qrc">
      <normaloff>:/icons/open.svg</normaloff>:/icons/open.svg</iconset>
    </property>
    <property name="text">
@@ -150,7 +150,7 @@
   </action>
   <action name="actionOpenWorkspace">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources/resources.qrc">
      <normaloff>:/icons/open.svg</normaloff>:/icons/open.svg</iconset>
    </property>
    <property name="text">
@@ -162,7 +162,7 @@
   </action>
   <action name="actionSaveWorkspace">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources/resources.qrc">
      <normaloff>:/icons/icons8-save-16.png</normaloff>:/icons/icons8-save-16.png</iconset>
    </property>
    <property name="text">
@@ -176,7 +176,7 @@
   <zorder>dockWidgetChannels</zorder>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
