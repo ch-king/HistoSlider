@@ -1,5 +1,5 @@
-from histoslider.imcslider.data_classes import SlideData
 from histoslider.models.base_data import BaseData
+from histoslider.models.slide_data import SlideData
 
 
 class WorkspaceData(BaseData):

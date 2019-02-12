@@ -23,8 +23,6 @@ class SlideItem(QGraphicsItem):
             print(e)
             return False
 
-        self.scene().dirty = True
-
         return True
 
     def attachImage(self, img, RGB=True):
@@ -34,7 +32,7 @@ class SlideItem(QGraphicsItem):
         """
         # load the image
         try:
-            self.image_item.load_image(filename=file, RGB=RGB)
+            self.image_item.attach_image(img, RGB)
             self.prepareGeometryChange()
         except Exception as e:
             print(e)

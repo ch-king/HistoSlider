@@ -16,3 +16,6 @@ class GreyImageItem(ImageItem):
     def load_image(self, file_path: str):
         img = Image.open(file_path)
         self.image = np.asarray(img, dtype=np.float32).T
+
+    def attach_image(self, img):
+        self.image = np.asarray(img, dtype=np.float32).T

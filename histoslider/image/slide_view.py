@@ -1,26 +1,28 @@
 import imctools.io.mcdparser as mcdparser
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QMouseEvent, QPaintEvent, QWheelEvent
-from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QWidget, QMenu, QAction
+from PyQt5.QtWidgets import QGraphicsView, QWidget, QMenu, QAction
 
 from histoslider.core.hub_listener import HubListener
 from histoslider.core.message import TreeViewCurrentItemChangedMessage
 from histoslider.image.image_item import ImageItem
 from histoslider.image.slide_item import SlideItem
+from histoslider.image.slide_scene import SlideScene
 from histoslider.models.channel_data import ChannelData
 from histoslider.models.data_manager import DataManager
 
 
 class SlideView(QGraphicsView, HubListener):
-    def __init__(self, scene: QGraphicsScene, parent: QWidget):
+    def __init__(self, parent: QWidget, histogram):
+        scene = SlideScene()
         QGraphicsView.__init__(self, scene, parent)
         HubListener.__init__(self)
-        self.setMinimumSize(200, 200)
+        self.histogram = histogram
         self.setAlignment(Qt.AlignCenter)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         # self.customContextMenuRequested.connect(self.openViewContextMenu)
         self.setDragMode(QGraphicsView.ScrollHandDrag)
-        self.zoom_handler = None
+        self.downsample = 1.0
         self.register_to_hub(DataManager.hub)
 
     def register_to_hub(self, hub):
@@ -35,29 +37,27 @@ class SlideView(QGraphicsView, HubListener):
                 self.scene().clear()
                 slide = True
                 RGB = True
+
                 if slide:
-                    self.graphItem = SlideItem(scene=self.scene())
-                    success = self.graphItem.loadImage(fname, RGB)
-
+                    self.graphItem = SlideItem()
+                    success = self.graphItem.attachImage(img, RGB)
                 else:
-                    self.graphItem = ImageItem(scene=self.scene())
-                    success = self.graphItem.loadImage(fname, RGB)
+                    self.graphItem = ImageItem()
+                    success = self.graphItem.attachImage(img, RGB)
 
-                if not success:
-                    message = "Failed to load an image"
-                else:
+                if success:
+                    self.scene().dirty = True
+                    self.scene().addItem(self.graphItem)
                     self.scene().setSceneRect(self.graphItem.boundingRect())
                     self.histogram.setImageItem(self.graphItem.image_item)
-                    # self.histogram.autoHistogramRange()
-                    self.showImage()
+                    self.histogram.autoHistogramRange()
+                    self.showImage(self.downsample)
 
-    def showImage(self, downsample=None):
+
+    def showImage(self, downsample: float):
         if self.scene().width() == 0:
             return
-        if downsample is None:
-            downsample = 1.15
         (x, y, w, h) = self.get_current_scene_window()
-
         self.scene().paint_view(self, x, y, w, h, downsample)
 
     def openViewContextMenu(self, position):
@@ -73,9 +73,6 @@ class SlideView(QGraphicsView, HubListener):
             menu.addAction(add_align_point)
         menu.exec_(self.view.mapToGlobal(position))
 
-    def setZoomHandler(self, zoom_handler):
-        self.zoom_handler = zoom_handler
-
     def get_current_scene_window(self):
         size = self.size()
         points = self.mapToScene(0, 0, size.width(), size.height()).boundingRect()
@@ -84,7 +81,7 @@ class SlideView(QGraphicsView, HubListener):
 
     def updateSlideView(self):
         (x, y, w, h) = self.get_current_scene_window()
-        self.scene().paint_view(self, x, y, w, h, self.scene().cur_downsample)
+        self.scene().paint_view(self, x, y, w, h, self.scene().current_downsample)
 
     def paintEvent(self, event: QPaintEvent):
         self.updateSlideView()
@@ -106,16 +103,10 @@ class SlideView(QGraphicsView, HubListener):
         super().mousePressEvent(event)
 
     def wheelEvent(self, event: QWheelEvent):
-        modifiers = QApplication.keyboardModifiers()
-        if modifiers == Qt.ControlModifier:
-            super().wheelEvent(event)
+        numDegrees = event.angleDelta().y() / 8
+        numSteps = numDegrees / 15
+        if numSteps > 0:
+            self.downsample = max(self.downsample - self.downsample * 0.1 * numSteps, 0.001)
         else:
-            if self.zoom_handler is not None:
-                curVal = self.zoom_handler.value()
-                numDegrees = event.delta() / 8
-                numSteps = numDegrees / 15
-                if numSteps > 0:
-                    zoom_val = max(curVal - curVal * 0.1 * numSteps, 0.001)
-                else:
-                    zoom_val = curVal - curVal * 0.1 * numSteps
-                self.zoom_handler.setValue(zoom_val)
+            self.downsample = self.downsample - self.downsample * 0.1 * numSteps
+        self.showImage(self.downsample)

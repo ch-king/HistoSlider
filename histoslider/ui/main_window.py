@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import (
     QApplication,
     QMenu,
     QAction, QDialog, QWidget, QAbstractItemView, QGraphicsView)
+from pyqtgraph import HistogramLUTWidget
 
 from histoslider.core.message import TreeViewCurrentItemChangedMessage
 from histoslider.image.image_item import ImageItem
@@ -47,9 +48,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeViewOverview.selectionModel().selectionChanged.connect(self._treeview_selection_changed)
         self.treeViewOverview.selectionModel().currentChanged.connect(self._treeview_current_changed)
 
-        self.scene = SlideScene()
-        self.graphItem = SlideItem()
-        self.viewer = SlideView(self.scene, self)
+        self.histogram = HistogramLUTWidget(self)
+        self.viewer = SlideView(self, self.histogram)
+        self.verticalLayoutSettings.addWidget(self.histogram)
 
         self.tabWidget.addTab(self.viewer, "Blend")
 
@@ -92,38 +93,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #     else:
         #         channel_model= cw.ChannelTableModel()
         #         proxy_model.setSourceModel(channel_model)
-
-    def load_image(self, filename: str = None, RGB: bool = True, slide: bool = False):
-        if filename is None:
-            action = self.sender()
-            if isinstance(action, QAction):
-                filename = action.data()
-            else:
-                return
-        if filename:
-            self.scene.removeItem(self.graphItem)
-            if slide:
-                self.graphItem = SlideItem(scene=self.scn)
-                success = self.graphItem.loadImage(filename, RGB)
-
-            else:
-                self.graphItem = ImageItem(scene=self.scn)
-                success = self.graphItem.loadImage(filename, RGB)
-
-            if not success:
-                message = "Failed to read {}".format(filename)
-            else:
-                self.addRecentFile(filename)
-                self.scn.setSceneRect(self.graphItem.boundingRect())
-                self.histogram.setImageItem(self.graphItem.image_item)
-                self.histogram.autoHistogramRange()
-                self.showImage()
-                self.dirty = False
-                self.sizeLabel.setText("{} x {}".format(
-                    self.scn.width(), self.scn.height()))
-                message = "Loaded {}".format(os.path.basename(filename))
-
-            self.updateStatus(message)
 
     def load_settings(self):
         settings = QSettings()

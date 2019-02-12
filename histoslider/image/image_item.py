@@ -6,7 +6,7 @@ from histoslider.image.grey_image_item import GreyImageItem
 
 
 class ImageItem(QGraphicsItem):
-    def __init__(self, parent: QGraphicsItem):
+    def __init__(self, parent: QGraphicsItem = None):
         QGraphicsItem.__init__(self, parent)
         self.image_item = GreyImageItem(parent=self)
 
@@ -23,7 +23,20 @@ class ImageItem(QGraphicsItem):
             print(e)
             return False
 
-        self.scene().dirty = True
+        return True
+
+    def attachImage(self, img, RGB=True):
+        """
+        :param file: get_filename or PIL object to be loaded
+        :return bool: success of loading
+        """
+        # load the image
+        try:
+            self.image_item.attach_image(img, RGB)
+            self.prepareGeometryChange()
+        except Exception as e:
+            print(e)
+            return False
 
         return True
 

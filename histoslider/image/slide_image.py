@@ -23,6 +23,12 @@ class SlideImage(AbstractSlide):
         # self.img will be an OpenSlide class image
         self.img = open_slide(filename)
 
+    def attach_image(self, img, RGB=True):
+        # Loads a (slide) image
+        self.RGB = RGB
+        # self.img will be an OpenSlide class image
+        self.img = ImageSlide(Image.fromarray(img))
+
     @dummyImageDecorator
     def read_region(self, location: Tuple[int, int], level: int, size: Tuple[int, int]) -> Image:
         """

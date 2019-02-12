@@ -6,7 +6,7 @@ from histoslider.image.slide_image import SlideImage
 
 class SlideImageItem(ImageItem):
     """
-    Expands the pyqtgraph imageitem class to use a SlideImage in the background
+    Expands the pyqtgraph ImageItem class to use a SlideImage in the background
     """
     def __init__(self, slide_image=None, **kargs):
         ImageItem.__init__(self, image=None, **kargs)
@@ -26,7 +26,7 @@ class SlideImageItem(ImageItem):
         self.RGB = RGB
 
     def attach_image(self, img, RGB=True):
-        self.slide_image.load_slide(filename, RGB)
+        self.slide_image.attach_image(img, RGB)
         self.RGB = RGB
 
     def update_image_region(self, level, window_x, window_y, window_w, window_h, autoLevels=False, **kargs):

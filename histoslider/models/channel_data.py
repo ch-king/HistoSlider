@@ -1,6 +1,4 @@
-from histoslider.models.acquisition_data import AcquisitionData
 from histoslider.models.base_data import BaseData
-from histoslider.models.slide_data import SlideData
 
 
 class ChannelData(BaseData):
@@ -11,9 +9,9 @@ class ChannelData(BaseData):
         self.mass = mass
 
     @property
-    def acquisition(self) -> AcquisitionData:
+    def acquisition(self):
         return self.parent()
 
     @property
-    def slide(self) -> SlideData:
+    def slide(self):
         return self.acquisition.slide
