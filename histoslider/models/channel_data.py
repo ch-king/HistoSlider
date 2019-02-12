@@ -1,3 +1,5 @@
+from PyQt5.QtGui import QIcon
+
 from histoslider.models.base_data import BaseData
 
 
@@ -15,3 +17,11 @@ class ChannelData(BaseData):
     @property
     def slide(self):
         return self.acquisition.slide
+
+    @property
+    def icon(self):
+        return QIcon(":/icons/icons8-compact-camera-16.png")
+
+    @property
+    def tooltip(self):
+        return "Channel"

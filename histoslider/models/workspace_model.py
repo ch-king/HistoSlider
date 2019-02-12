@@ -63,39 +63,38 @@ class WorkspaceModel(QAbstractItemModel):
             return index.internalPointer().columnCount()
         return self.workspace_data.columnCount()
 
-    def data(self, index: QModelIndex, role):
+    def data(self, index: QModelIndex, role: int = None):
         if not index.isValid():
             return None
 
-        if role == Qt.CheckStateRole:
-            if index.column() != 2:
-                return None
-            item = self.getItem(index)
-            return Qt.Checked if item.checked() else Qt.Unchecked
-
-        if role != Qt.DisplayRole and role != Qt.EditRole:
-            return None
-
-        if index.column() == 2:
-            return None
-
         item = self.getItem(index)
-        return item.data(index.column())
+
+        if role == Qt.ToolTipRole:
+            if index.column() == 0:
+                return item.tooltip
+
+        if role == Qt.DecorationRole:
+            if index.column() == 0:
+                return item.icon
+
+        if role == Qt.CheckStateRole:
+            if index.column() == 0:
+                return Qt.Checked if item.checked else Qt.Unchecked
+
+        if role == Qt.DisplayRole or role == Qt.EditRole:
+            if index.column() != 1:
+                return item.data(index.column())
+
+        return None
 
     def setData(self, index: QModelIndex, value, role=Qt.EditRole):
+        if not index.isValid():
+            return False
+        item = self.getItem(index)
         if role == Qt.CheckStateRole:
-            node = self.getItem(index)
-            if node.set_checked(not node.checked()):
-                self.changed_showed.emit(index)
-                return True
-        elif role == Qt.EditRole:
-            item = self.getItem(index)
-            result = item.setData(index.column(), value)
-
-            if result:
-                self.dataChanged.emit(index, index)
-
-            return result
+            item.checked = not item.checked
+            self.changed_showed.emit(index)
+            return True
         else:
             return False
 

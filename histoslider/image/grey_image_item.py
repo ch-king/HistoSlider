@@ -13,8 +13,8 @@ class GreyImageItem(ImageItem):
         if filename is not None:
             self.load_image(filename)
 
-    def load_image(self, file_path: str):
-        img = Image.open(file_path)
+    def load_image(self, filename: str):
+        img = Image.open(filename)
         self.image = np.asarray(img, dtype=np.float32).T
 
     def attach_image(self, img):

@@ -1,4 +1,5 @@
 import json
+from enum import Enum
 
 from PIL import Image
 
@@ -49,9 +50,11 @@ class IdBasedProperty(property):
 
         super().__init__(fget, fset, fdel)
 
+
 def save_json(entry_dict, filename):
     dlist = _data_tolist(entry_dict)
     _dump_json(dlist, filename)
+
 
 def load_json(filename):
     with open(filename) as data_file:
@@ -61,17 +64,19 @@ def load_json(filename):
 
 
 def _data_tolist(entry_dict):
-    dumps =list()
+    dumps = list()
     for key, entry in entry_dict.items():
         d = entry.dump()
         if d is not None:
             dumps.append(entry.dump())
     return dumps
 
+
 def _dump_json(obj, file_name):
     with open(file_name, 'w') as outfile:
         json.dump(obj, outfile, sort_keys=True,
-                 indent=4,separators=(',', ': '))
+                  indent=4, separators=(',', ': '))
+
 
 def dummyImageDecorator(func):
     """
@@ -90,3 +95,8 @@ def dummyImageDecorator(func):
             return Image.new('RGBA', size)
 
     return func_wrapper
+
+
+class SlideType(Enum):
+    MCD = 1,
+    TIFF = 2

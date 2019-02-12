@@ -15,5 +15,8 @@
         <file>icons/icons8-save-16.png</file>
         <file>icons/icons8-save-as-16.png</file>
         <file>icons/icons8-switch-16.png</file>
+        <file>icons/icons8-sheets-16.png</file>
+        <file>icons/icons8-film-roll-16.png</file>
+        <file>icons/icons8-compact-camera-16.png</file>
     </qresource>
 </RCC>

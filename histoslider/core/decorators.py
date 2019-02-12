@@ -1,3 +1,4 @@
+import traceback
 from functools import wraps
 
 
@@ -80,3 +81,18 @@ def singleton(cls):
             instances[cls] = cls()
         return instances[cls]
     return getinstance
+
+
+def catch_error(msg):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                m = "%s\n%s" % (msg, str(e))
+                detail = str(traceback.format_exc())
+                self = args[0]
+                self.report_error(m, detail)
+        return wrapper
+    return decorator

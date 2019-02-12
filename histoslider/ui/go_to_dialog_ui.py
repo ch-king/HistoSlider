@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file '/home/anton/bblab/histoslider/histoslider/ui/go_to_dialog.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_GoToDialog(object):
     def setupUi(self, GoToDialog):
@@ -77,4 +78,5 @@ class Ui_GoToDialog(object):
         self.yLabel.setText(_translate("GoToDialog", "Y"))
         self.widthLabel.setText(_translate("GoToDialog", "Width"))
         self.heightLabel.setText(_translate("GoToDialog", "Height"))
+
 

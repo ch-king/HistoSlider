@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file '/home/anton/bblab/histoslider/histoslider/ui/slide_info_widget.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_SlideInfoWidget(object):
     def setupUi(self, SlideInfoWidget):
@@ -41,4 +42,5 @@ class Ui_SlideInfoWidget(object):
         self.mouseSceneLabel.setText(_translate("SlideInfoWidget", "Mouse Scene:"))
         self.viewSceneLabel.setText(_translate("SlideInfoWidget", "View Scene:"))
         self.selectedAreaLabel.setText(_translate("SlideInfoWidget", "Selected Area (0-level):"))
+
 

@@ -2,6 +2,7 @@ import os
 
 import imctools.io.mcdparser as mcdparser
 
+from histoslider.image.helpers import SlideType
 from histoslider.models.acquisition_data import AcquisitionData
 from histoslider.models.channel_data import ChannelData
 from histoslider.models.slide_data import SlideData
@@ -14,7 +15,7 @@ class McdLoader:
     def load(self):
         with mcdparser.McdParser(self.file_path) as mcd:
             file_name = os.path.basename(self.file_path)
-            slide_data = SlideData(file_name, self.file_path)
+            slide_data = SlideData(file_name, self.file_path, SlideType.MCD)
             for id in mcd.acquisition_ids:
                 description = mcd.get_acquisition_description(id)
                 imc_ac = mcd.get_imc_acquisition(id, description)

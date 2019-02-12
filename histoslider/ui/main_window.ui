@@ -46,7 +46,7 @@
     <addaction name="actionOpenWorkspace"/>
     <addaction name="actionSaveWorkspace"/>
     <addaction name="separator"/>
-    <addaction name="actionOpenSlide"/>
+    <addaction name="actionImportSlide"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -70,7 +70,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionOpenSlide"/>
+   <addaction name="actionImportSlide"/>
   </widget>
   <widget class="QDockWidget" name="dockWidgetOverview">
    <property name="windowTitle">
@@ -90,7 +90,7 @@
         <enum>QAbstractItemView::SingleSelection</enum>
        </property>
        <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectRows</enum>
+        <enum>QAbstractItemView::SelectItems</enum>
        </property>
       </widget>
      </item>
@@ -136,16 +136,16 @@
     <string>About</string>
    </property>
   </action>
-  <action name="actionOpenSlide">
+  <action name="actionImportSlide">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
      <normaloff>:/icons/open.svg</normaloff>:/icons/open.svg</iconset>
    </property>
    <property name="text">
-    <string>Open Slide</string>
+    <string>Import Slide</string>
    </property>
    <property name="toolTip">
-    <string>Open slide...</string>
+    <string>Import slide...</string>
    </property>
   </action>
   <action name="actionOpenWorkspace">
